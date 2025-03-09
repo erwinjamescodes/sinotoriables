@@ -9,7 +9,7 @@ import Footer from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PhilSenate Pulse",
+  title: "SinoToriables",
   description: "Track and engage with Philippine Senate election candidates",
   generator: "v0.dev",
 };
@@ -30,7 +30,9 @@ export default function RootLayout({
         >
           <div className="flex min-h-screen flex-col">
             <Header />
-            <main className="flex-1 mx-auto">{children}</main>
+            <main className="flex-1 w-full flex items-center justify-center">
+              {children}
+            </main>
             <Footer />
           </div>
         </ThemeProvider>

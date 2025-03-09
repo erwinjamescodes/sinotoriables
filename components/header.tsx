@@ -7,7 +7,7 @@ export default function Header() {
       <div className="container flex h-16 items-center justify-between mx-auto">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-xl font-bold">PhilSenate Pulse</span>
+            <span className="text-xl font-bold">SinoToriables</span>
           </Link>
           <nav className="hidden md:flex gap-6">
             <Link

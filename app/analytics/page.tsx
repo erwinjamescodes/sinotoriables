@@ -1,23 +1,27 @@
-import { getAnalyticsData } from "@/app/actions"
-import { CandidateRankings } from "@/components/candidate-rankings"
-import { LikesTimeline } from "@/components/likes-timeline"
-import { PartyDistribution } from "@/components/party-distribution"
+import { getAnalyticsData } from "@/app/actions";
+import { CandidateRankings } from "@/components/candidate-rankings";
+import { LikesTimeline } from "@/components/likes-timeline";
+import { PartyDistribution } from "@/components/party-distribution";
 
 export const metadata = {
-  title: "Analytics | PhilSenate Pulse",
-  description: "Explore analytics and insights about Philippine Senate election candidates",
-}
+  title: "Analytics | SinoToriables",
+  description:
+    "Explore analytics and insights about Philippine Senate election candidates",
+};
 
 export default async function AnalyticsPage() {
-  const { candidatesWithLikes, timelineData } = await getAnalyticsData()
+  const { candidatesWithLikes, timelineData } = await getAnalyticsData();
 
   return (
     <div className="container py-8">
       <div className="space-y-8">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">Analytics & Insights</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Analytics & Insights
+          </h1>
           <p className="text-muted-foreground">
-            Explore data and trends about the Philippine Senate election candidates.
+            Explore data and trends about the Philippine Senate election
+            candidates.
           </p>
         </div>
 
@@ -39,6 +43,5 @@ export default async function AnalyticsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
