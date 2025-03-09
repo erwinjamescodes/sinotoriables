@@ -9,5 +9,4 @@ export const supabase = createClient<Database>(
 
 export type Candidate = Database["public"]["Tables"]["candidates"]["Row"]
 export type Like = Database["public"]["Tables"]["likes"]["Row"]
-export type CandidateWithLikes = Candidate & { likes_count: number }
-
+export type CandidateWithLikes = Candidate & { like_count: number }

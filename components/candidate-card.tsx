@@ -30,9 +30,8 @@ export function CandidateCard({ candidate }: CandidateCardProps) {
         <Link href={`/candidates/${candidate.id}`} className="text-sm font-medium text-primary hover:underline">
           View Profile
         </Link>
-        <LikeButton candidateId={candidate.id} initialLikes={candidate.likes_count} />
+        <LikeButton candidateId={candidate.id} initialLikes={candidate.like_count} />
       </CardFooter>
     </Card>
   )
 }
-

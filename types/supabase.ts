@@ -62,7 +62,7 @@ export interface Database {
           platform: string
           bio: string
           image_url: string
-          likes_count: number
+          like_count: number
         }
       }
     }
@@ -79,4 +79,3 @@ export interface Database {
     }
   }
 }
-

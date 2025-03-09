@@ -54,7 +54,7 @@ export function CandidateRankings({ candidates }: CandidateRankingsProps) {
               </TableRow>
             ) : (
               filteredCandidates
-                .sort((a, b) => b.likes_count - a.likes_count)
+                .sort((a, b) => b.like_count - a.like_count)
                 .map((candidate, index) => (
                   <TableRow key={candidate.id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
@@ -72,7 +72,7 @@ export function CandidateRankings({ candidates }: CandidateRankingsProps) {
                       </div>
                     </TableCell>
                     <TableCell>{candidate.party}</TableCell>
-                    <TableCell className="text-right">{candidate.likes_count}</TableCell>
+                    <TableCell className="text-right">{candidate.like_count}</TableCell>
                     <TableCell>
                       <Link href={`/candidates/${candidate.id}`}>
                         <Button variant="ghost" size="sm">
@@ -89,4 +89,3 @@ export function CandidateRankings({ candidates }: CandidateRankingsProps) {
     </div>
   )
 }
-

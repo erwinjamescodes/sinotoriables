@@ -58,9 +58,9 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="text-sm text-muted-foreground">Likes:</span>
-                      <span className="font-medium">{candidate.likes_count}</span>
+                      <span className="font-medium">{candidate.like_count}</span>
                     </div>
-                    <LikeButton candidateId={candidate.id} initialLikes={candidate.likes_count} />
+                    <LikeButton candidateId={candidate.id} initialLikes={candidate.like_count} />
                   </div>
                   <div className="pt-4 border-t">
                     <Button className="w-full">Share Profile</Button>
@@ -94,7 +94,7 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 border rounded-md">
                     <div className="text-sm text-muted-foreground">Likes</div>
-                    <div className="text-2xl font-bold">{candidate.likes_count}</div>
+                    <div className="text-2xl font-bold">{candidate.like_count}</div>
                   </div>
                   <div className="p-4 border rounded-md">
                     <div className="text-sm text-muted-foreground">Ranking</div>
@@ -124,4 +124,3 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
     notFound()
   }
 }
-

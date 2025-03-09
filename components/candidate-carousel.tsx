@@ -9,7 +9,7 @@ export async function CandidateCarousel() {
   const { data: candidates, error } = await supabase
     .from("candidates_with_likes")
     .select("*")
-    .order("likes_count", { ascending: false })
+    .order("like_count", { ascending: false })
     .limit(5)
 
   if (error) {
@@ -39,7 +39,7 @@ export async function CandidateCarousel() {
                 <Link href={`/candidates/${candidate.id}`} className="text-sm text-primary hover:underline">
                   View Profile
                 </Link>
-                <LikeButton candidateId={candidate.id} initialLikes={candidate.likes_count} />
+                <LikeButton candidateId={candidate.id} initialLikes={candidate.like_count} />
               </div>
             </CardContent>
           </Card>
@@ -48,4 +48,3 @@ export async function CandidateCarousel() {
     </div>
   )
 }
-

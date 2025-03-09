@@ -10,8 +10,8 @@ export async function StatsSection() {
   // Fetch most liked candidate
   const { data: topCandidate } = await supabase
     .from("candidates_with_likes")
-    .select("name, likes_count")
-    .order("likes_count", { ascending: false })
+    .select("name, like_count")
+    .order("like_count", { ascending: false })
     .limit(1)
     .single()
 
@@ -33,4 +33,3 @@ export async function StatsSection() {
     </div>
   )
 }
-
