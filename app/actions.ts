@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { cache } from "react";
 import { supabase } from "@/lib/supabase";
 
 export async function toggleLike(candidateId: number) {
@@ -32,10 +33,54 @@ export async function toggleLike(candidateId: number) {
     throw new Error("Failed to toggle like");
   }
 
-  return data;
+  console.log("Toggle like response:", data); // Debug log to check response structure
+
+  // Return a structured response based on the action from the Supabase function
+  return {
+    liked: data.action === "liked",
+    action: data.action,
+    candidateId: data.candidate_id,
+  };
 }
 
-export async function getCandidates() {
+/**
+ * Check if the current user has liked specific candidates
+ * @param candidateIds Array of candidate IDs to check
+ * @returns Object mapping candidate IDs to boolean liked status
+ */
+export const getUserLikes = cache(async (candidateIds?: number[]) => {
+  const cookieStore = await cookies();
+  const userId = cookieStore.get("user_id")?.value;
+
+  // If no user ID is found, no likes exist yet
+  if (!userId) {
+    return { likedCandidates: [] };
+  }
+
+  let query = supabase
+    .from("likes")
+    .select("candidate_id")
+    .eq("browser_id", userId);
+
+  // Optionally filter by specific candidate IDs if provided
+  if (candidateIds && candidateIds.length > 0) {
+    query = query.in("candidate_id", candidateIds);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error fetching user likes:", error);
+    return { likedCandidates: [] };
+  }
+
+  // Return an array of liked candidate IDs
+  return {
+    likedCandidates: data.map((like) => like.candidate_id),
+  };
+});
+
+export const getCandidates = cache(async () => {
   const { data, error } = await supabase
     .from("candidates_with_likes")
     .select("*")
@@ -47,9 +92,9 @@ export async function getCandidates() {
   }
 
   return data;
-}
+});
 
-export async function getCandidateById(id: number) {
+export const getCandidateById = cache(async (id: number) => {
   const { data, error } = await supabase
     .from("candidates_with_likes")
     .select("*")
@@ -62,9 +107,9 @@ export async function getCandidateById(id: number) {
   }
 
   return data;
-}
+});
 
-export async function getAnalyticsData() {
+export const getAnalyticsData = cache(async () => {
   // Get candidates with likes for analytics
   const { data: candidatesWithLikes, error } = await supabase
     .from("candidates_with_likes")
@@ -97,7 +142,7 @@ export async function getAnalyticsData() {
     candidatesWithLikes,
     timelineData,
   };
-}
+});
 
 function processTimelineData(likes: { created_at: string }[]) {
   const dateMap = new Map<string, number>();

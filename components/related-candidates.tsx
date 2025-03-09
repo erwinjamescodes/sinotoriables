@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
+import { cache } from "react"
 import { supabase } from "@/lib/supabase"
 import { Card, CardContent } from "@/components/ui/card"
 
@@ -7,24 +8,47 @@ interface RelatedCandidatesProps {
   currentCandidateId: number
 }
 
-export async function RelatedCandidates({ currentCandidateId }: RelatedCandidatesProps) {
-  // Fetch candidates from the same party
-  const { data: currentCandidate } = await supabase
+// Cache the candidate party lookup to reduce duplicate API calls
+const getCandidateParty = cache(async (candidateId: number) => {
+  const { data, error } = await supabase
     .from("candidates")
     .select("party")
-    .eq("id", currentCandidateId)
+    .eq("id", candidateId)
     .single()
+  
+  if (error) {
+    console.error("Error fetching candidate party:", error)
+    return null
+  }
+  
+  return data
+})
+
+// Cache the related candidates lookup
+const getRelatedCandidates = cache(async (candidateId: number, party: string) => {
+  const { data, error } = await supabase
+    .from("candidates_with_likes")
+    .select("*")
+    .eq("party", party)
+    .neq("id", candidateId)
+    .limit(3)
+  
+  if (error) {
+    console.error("Error fetching related candidates:", error)
+    return []
+  }
+  
+  return data
+})
+
+export async function RelatedCandidates({ currentCandidateId }: RelatedCandidatesProps) {
+  const currentCandidate = await getCandidateParty(currentCandidateId)
 
   if (!currentCandidate) {
     return null
   }
 
-  const { data: relatedCandidates } = await supabase
-    .from("candidates_with_likes")
-    .select("*")
-    .eq("party", currentCandidate.party)
-    .neq("id", currentCandidateId)
-    .limit(3)
+  const relatedCandidates = await getRelatedCandidates(currentCandidateId, currentCandidate.party)
 
   if (!relatedCandidates || relatedCandidates.length === 0) {
     return <p className="text-muted-foreground">No related candidates found.</p>
@@ -37,7 +61,7 @@ export async function RelatedCandidates({ currentCandidateId }: RelatedCandidate
           <CardContent className="p-4 flex items-center gap-3">
             <div className="relative w-12 h-12 rounded-full overflow-hidden">
               <Image
-                src={candidate.image_url || `/placeholder.svg?height=48&width=48`}
+                src={candidate.photo_url || `/placeholder.svg?height=48&width=48`}
                 alt={candidate.name}
                 fill
                 className="object-cover"
@@ -55,4 +79,3 @@ export async function RelatedCandidates({ currentCandidateId }: RelatedCandidate
     </div>
   )
 }
-

@@ -4,7 +4,7 @@ import { LikesTimeline } from "@/components/likes-timeline";
 import { PartyDistribution } from "@/components/party-distribution";
 
 export const metadata = {
-  title: "Analytics | SinoToriables",
+  title: "Analytics | SinoToriables 2025 PH",
   description:
     "Explore analytics and insights about Philippine Senate election candidates",
 };
@@ -25,16 +25,17 @@ export default async function AnalyticsPage() {
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        {/* <div className="grid gap-6 md:grid-cols-2"> */}
+        <div className="">
           <div className="p-6 bg-card rounded-lg shadow-sm">
             <h2 className="text-xl font-semibold mb-4">Likes Timeline</h2>
             <LikesTimeline data={timelineData} />
           </div>
 
-          <div className="p-6 bg-card rounded-lg shadow-sm">
+          {/* <div className="p-6 bg-card rounded-lg shadow-sm">
             <h2 className="text-xl font-semibold mb-4">Party Distribution</h2>
             <PartyDistribution candidates={candidatesWithLikes} />
-          </div>
+          </div> */}
         </div>
 
         <div className="p-6 bg-card rounded-lg shadow-sm">

@@ -9,7 +9,7 @@ import Footer from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SinoToriables",
+  title: "SinoToriables 2025 PH",
   description: "Track and engage with Philippine Senate election candidates",
   generator: "v0.dev",
 };

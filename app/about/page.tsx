@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "About | SinoToriables",
-  description: "Learn about the SinoToriables application",
+  title: "About | SinoToriables 2025 PH",
+  description: "Learn about the SinoToriables 2025 PH application",
 };
 
 export default function AboutPage() {
@@ -9,7 +9,7 @@ export default function AboutPage() {
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">
-            About SinoToriables
+            About SinoToriables 2025 PH
           </h1>
           <p className="text-muted-foreground">
             Learn about our mission and how to use this platform.
@@ -19,10 +19,10 @@ export default function AboutPage() {
         <div className="prose max-w-none dark:prose-invert">
           <h2>Our Mission</h2>
           <p>
-            SinoToriables aims to provide a transparent and accessible platform
-            for Philippine citizens to learn about Senate candidates, their
-            platforms, and engage with the democratic process. We believe that
-            an informed electorate is essential for a healthy democracy.
+            SinoToriables 2025 PH aims to provide a transparent and accessible
+            platform for Philippine citizens to learn about Senate candidates,
+            their platforms, and engage with the democratic process. We believe
+            that an informed electorate is essential for a healthy democracy.
           </p>
 
           <h2>How It Works</h2>

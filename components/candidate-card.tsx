@@ -6,9 +6,13 @@ import type { CandidateWithLikes } from "@/lib/supabase";
 
 interface CandidateCardProps {
   candidate: CandidateWithLikes;
+  isLiked?: boolean;
 }
 
-export function CandidateCard({ candidate }: CandidateCardProps) {
+export function CandidateCard({
+  candidate,
+  isLiked = false,
+}: CandidateCardProps) {
   return (
     <Card className="overflow-hidden">
       <div className="aspect-[3/4] relative">
@@ -36,6 +40,7 @@ export function CandidateCard({ candidate }: CandidateCardProps) {
         <LikeButton
           candidateId={candidate.id}
           initialLikes={candidate.like_count}
+          isLiked={isLiked}
         />
       </CardFooter>
     </Card>

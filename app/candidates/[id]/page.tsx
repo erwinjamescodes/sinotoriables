@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getCandidateById } from "@/app/actions";
+import { cache } from "react";
+import { getCandidateById, getUserLikes } from "@/app/actions";
 import { LikeButton } from "@/components/like-button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,14 +14,17 @@ interface CandidatePageProps {
   };
 }
 
+// Create a cached version of getCandidateById to avoid duplicate requests
+const getCachedCandidateById = cache(getCandidateById);
+
 export async function generateMetadata({ params }: CandidatePageProps) {
   const id = Number.parseInt(params.id);
   if (isNaN(id)) return { title: "Candidate Not Found" };
 
   try {
-    const candidate = await getCandidateById(id);
+    const candidate = await getCachedCandidateById(id);
     return {
-      title: `${candidate.name} | SinoToriables`,
+      title: `${candidate.name} | SinoToriables 2025 PH`,
       description: `Learn about ${candidate.name}, candidate for the Philippine Senate.`,
     };
   } catch (error) {
@@ -33,7 +37,11 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
   if (isNaN(id)) notFound();
 
   try {
-    const candidate = await getCandidateById(id);
+    const candidate = await getCachedCandidateById(id);
+
+    // Fetch like status for this candidate
+    const { likedCandidates } = await getUserLikes([candidate.id]);
+    const isLiked = likedCandidates.includes(candidate.id);
 
     return (
       <div className="container py-8">
@@ -70,6 +78,7 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                     <LikeButton
                       candidateId={candidate.id}
                       initialLikes={candidate.like_count}
+                      isLiked={isLiked}
                     />
                   </div>
                   <div className="pt-4 border-t">
