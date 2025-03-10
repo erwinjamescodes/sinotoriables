@@ -5,26 +5,26 @@ export default function Header() {
   return (
     <header className="border-b bg-primary text-white px-4">
       <div className="container flex h-16 items-center justify-between mx-auto">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 justify-between w-full">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-xl font-bold">SinoToriables PH</span>
           </Link>
           <nav className="hidden md:flex gap-6">
             <Link
               href="/candidates"
-              className="text-sm font-medium transition-colors hover:text-primary"
+              className="text-sm font-medium transition-colors hover:text-primary hover:text-gray-400"
             >
               Candidates
             </Link>
             <Link
               href="/analytics"
-              className="text-sm font-medium transition-colors hover:text-primary"
+              className="text-sm font-medium transition-colors hover:text-primary hover:text-gray-400"
             >
               Analytics
             </Link>
             <Link
               href="/about"
-              className="text-sm font-medium transition-colors hover:text-primary"
+              className="text-sm font-medium transition-colors hover:text-primary hover:text-gray-400"
             >
               About
             </Link>

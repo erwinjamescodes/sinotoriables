@@ -18,7 +18,7 @@ const BallotAnimation = () => {
               {/* The circle being filled animation */}
               <div className="absolute inset-0 bg-primary shading-animation"></div>
             </div>
-            <div className="font-medium">Senate Elections 2025</div>
+            <div className="font-medium">2025. Senate Elections</div>
           </div>
           <div className="flex items-center gap-3">
             <div className="h-8 w-8 rounded-full border border-gray-400"></div>

@@ -9,20 +9,20 @@ export default async function Home() {
     <div className="flex flex-col  pb-8 w-full">
       {/* Hero Section */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-blue-50 to-white flex justify-center">
-        <div className="container px-4 md:px-6">
-          <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-            <div className="flex flex-col justify-center space-y-4">
+        <div className="container px-4 md:px-0">
+          <div className="grid lg:grid-cols-2 items-center">
+            <div className="flex flex-col justify-center space-y-4 mb-8">
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  Kilalanin at kilatisin ang mga tumatakbo sa pagka-Senador
-                  ngayong 2025
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-3xl xl:text-6xl pr-8 md:pr-0">
+                  Kilalanin at kilatisin kung sinu-sino ang mga tumatakbo sa
+                  pagka-Senador ngayong 2025
                 </h1>
                 <p className="max-w-[600px] text-muted-foreground md:text-xl">
                   Stay informed about the upcoming Senate elections. Explore
                   candidates, their platforms, and show your support.
                 </p>
               </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
+              <div className="flex flex-col gap-2 min-[400px]:flex-row ">
                 <Link href="/candidates">
                   <Button size="lg">View Candidates</Button>
                 </Link>
