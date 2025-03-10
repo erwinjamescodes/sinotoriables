@@ -4,7 +4,7 @@ import { LikesTimeline } from "@/components/likes-timeline";
 import { PartyDistribution } from "@/components/party-distribution";
 
 export const metadata = {
-  title: "Analytics | SinoToriables 2025 PH",
+  title: "Analytics | SinoToriables PH",
   description:
     "Explore analytics and insights about Philippine Senate election candidates",
 };

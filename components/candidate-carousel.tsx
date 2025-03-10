@@ -10,7 +10,7 @@ export async function CandidateCarousel() {
     .from("candidates_with_likes")
     .select("*")
     .order("like_count", { ascending: false })
-    .limit(5);
+    .limit(4);
 
   if (error) {
     console.error("Error fetching candidates:", error);
@@ -19,9 +19,9 @@ export async function CandidateCarousel() {
 
   return (
     <div className="relative">
-      <div className="flex space-x-4 pb-4 overflow-x-auto">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pb-4">
         {candidates.map((candidate) => (
-          <Card key={candidate.id} className="min-w-[250px] max-w-[250px]">
+          <Card key={candidate.id} className="">
             <CardContent className="p-4">
               <div className="aspect-square relative mb-3 overflow-hidden rounded-lg">
                 <Image

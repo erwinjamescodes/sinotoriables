@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: CandidatePageProps) {
   try {
     const candidate = await getCachedCandidateById(id);
     return {
-      title: `${candidate.name} | SinoToriables 2025 PH`,
+      title: `${candidate.name} | SinoToriables PH`,
       description: `Learn about ${candidate.name}, candidate for the Philippine Senate.`,
     };
   } catch (error) {
@@ -52,7 +52,7 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                 <div className="aspect-[3/4] relative">
                   <Image
                     src={
-                      candidate.image_url ||
+                      candidate.photo_url ||
                       `/placeholder.svg?height=600&width=400`
                     }
                     alt={candidate.name}

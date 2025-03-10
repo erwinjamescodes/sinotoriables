@@ -3,7 +3,7 @@ import { CandidateCard } from "@/components/candidate-card";
 import { CandidateFilters } from "@/components/candidate-filters";
 
 export const metadata = {
-  title: "Candidates | SinoToriables 2025 PH",
+  title: "Candidates | SinoToriables PH",
   description: "Browse and learn about Philippine Senate election candidates",
 };
 
