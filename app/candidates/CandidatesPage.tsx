@@ -4,11 +4,25 @@ import { CandidateCard } from "@/components/candidate-card";
 import { CandidateFilters } from "@/components/candidate-filters";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { LayoutGrid, List, UserRoundCheck, ChevronUp } from "lucide-react";
+import {
+  LayoutGrid,
+  List,
+  UserRoundCheck,
+  ChevronUp,
+  CheckCircle,
+} from "lucide-react";
 import { CandidateWithLikes } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function CandidatesPage({
   candidatesData,
@@ -22,6 +36,8 @@ export default function CandidatesPage({
   const [likedCandidates, setLikedCandidates] = useState(likedCandidatesData);
   const [isLoading, setIsLoading] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [showCongratulationsModal, setShowCongratulationsModal] =
+    useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -156,6 +172,11 @@ export default function CandidatesPage({
           : "border-t-0 border-l-0 border-r-0 border-b-4 border-red-500 mb-2",
         duration: 1000, // Close after 3 seconds
       });
+
+      // Show congratulations modal when user reaches MAX_VOTES
+      if (serverIsLiked && newLikedCandidates.length === MAX_VOTES) {
+        setShowCongratulationsModal(true);
+      }
     } catch (error) {
       console.error("Like error:", error);
 
@@ -365,6 +386,43 @@ export default function CandidatesPage({
           </Button>
         </div>
       )}
+
+      {/* Congratulations Modal */}
+      <Dialog
+        open={showCongratulationsModal}
+        onOpenChange={setShowCongratulationsModal}
+      >
+        <DialogContent className="sm:max-w-md w-[90%] rounded-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center justify-center text-xl font-bold">
+              {/* <CheckCircle className="h-6 w-6 text-green-500 mr-2" /> */}
+              Congratulations!
+            </DialogTitle>
+            <DialogDescription className="text-center pt-2">
+              You have completed your 12/12 votes for the senatorial candidates.
+              Thank you for participating in this democratic exercise!
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-0">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setShowCongratulationsModal(false)}
+              className="sm:mr-2 w-full sm:w-auto"
+            >
+              Modify Votes
+            </Button>
+            <Button
+              type="button"
+              onClick={() => router.push("/my-list")}
+              className="w-full sm:w-auto"
+            >
+              View My List
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
