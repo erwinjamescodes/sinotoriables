@@ -3,8 +3,8 @@ import { ModeToggle } from "@/components/mode-toggle";
 
 export default function Header() {
   return (
-    <header className="border-b bg-primary text-white px-4">
-      <div className="container flex h-16 items-center justify-between mx-auto">
+    <header className="border-b bg-primary text-white px-24">
+      <div className="flex h-16 items-center justify-between mx-auto">
         <div className="flex items-center gap-6 justify-between w-full">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-xl font-bold">SinoToriables PH</span>
@@ -15,6 +15,12 @@ export default function Header() {
               className="text-sm font-medium transition-colors hover:text-gray-300"
             >
               Candidates
+            </Link>
+            <Link
+              href="/my-list"
+              className="text-sm font-medium transition-colors hover:text-gray-300"
+            >
+              My List
             </Link>
             <Link
               href="/analytics"
@@ -30,9 +36,6 @@ export default function Header() {
             </Link>
           </nav>
         </div>
-        {/* <div className="flex items-center gap-4">
-          <ModeToggle />
-        </div> */}
       </div>
     </header>
   );

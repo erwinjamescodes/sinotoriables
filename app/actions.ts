@@ -5,9 +5,6 @@ import { cache } from "react";
 import { supabase } from "@/lib/supabase";
 
 export async function toggleLike(candidateId: number) {
-  // Get the user's IP address or use a cookie-based identifier
-  // In a real app, you might use the user's IP address from request headers
-  // For this example, we'll use a cookie-based identifier
   const cookieStore = await cookies();
   let userId = cookieStore.get("user_id")?.value;
 

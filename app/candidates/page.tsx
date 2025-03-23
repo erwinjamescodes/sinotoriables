@@ -14,9 +14,11 @@ export default async function Page() {
   const { likedCandidates } = await getUserLikes(candidateIds);
 
   return (
-    <CandidatesPage
-      candidatesData={candidates}
-      likedCandidatesData={likedCandidates}
-    />
+    <div className="px-24 w-full">
+      <CandidatesPage
+        candidatesData={candidates}
+        likedCandidatesData={likedCandidates}
+      />
+    </div>
   );
 }

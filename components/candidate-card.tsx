@@ -10,7 +10,7 @@ interface CandidateCardProps {
   candidate: CandidateWithLikes;
   isLiked?: boolean;
   disabled?: boolean;
-  onLike?: (candidateId: number) => Promise<void>;
+  onLike?: (candidateId: number, candidateName: string) => Promise<void>;
 }
 
 export function CandidateCard({
@@ -29,11 +29,11 @@ export function CandidateCard({
     if (disabled && !isLiked) {
       return;
     }
-    
+
     if (onLike) {
       setIsLoading(true);
       try {
-        await onLike(candidate.id);
+        await onLike(candidate.id, candidate.name);
       } catch (error) {
         console.error("Error in CandidateCard handleLike:", error);
       } finally {
@@ -44,21 +44,29 @@ export function CandidateCard({
 
   return (
     <Card
-      className={`overflow-hidden ${isLiked ? "border-primary border-2 border-black" : ""} ${disabled && !isLiked ? "opacity-50" : ""}`}
+      className={`overflow-hidden ${
+        isLiked ? "border-primary border-2 border-black" : ""
+      } ${disabled && !isLiked ? "opacity-50" : ""}`}
     >
       <div className="aspect-[3/4] relative group hover:cursor-pointer">
         <Image
           src={candidate.photo_url || `/placeholder.svg?height=400&width=300`}
           alt={candidate.name}
           fill
-          className={`object-cover filter transition-all duration-300 ease-in-out ${isLiked ? "grayscale-0" : "grayscale"}`}
+          className={`object-cover filter transition-all duration-300 ease-in-out ${
+            isLiked ? "grayscale-0" : "grayscale"
+          }`}
         />
       </div>
       <CardContent className="p-4">
         <div className=" flex items-center gap-2">
           <div
             onClick={handleLike}
-            className={`h-4 w-4 border-2 rounded-full border-black ${isLiked ? "bg-black text-white" : ""} ${disabled && !isLiked ? "cursor-not-allowed" : "cursor-pointer"}`}
+            className={`h-4 w-4 border-2 rounded-full border-black ${
+              isLiked ? "bg-black text-white" : ""
+            } ${
+              disabled && !isLiked ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
           />
           <h3 className="font-medium text-lg flex items-center gap-2">
             {candidate.id}. {candidate.name}

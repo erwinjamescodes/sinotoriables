@@ -1,26 +1,33 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Search } from "lucide-react"
-import type { CandidateWithLikes } from "@/lib/supabase"
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import type { CandidateWithLikes } from "@/lib/supabase";
 
 interface CandidateRankingsProps {
-  candidates: CandidateWithLikes[]
+  candidates: CandidateWithLikes[];
 }
 
 export function CandidateRankings({ candidates }: CandidateRankingsProps) {
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredCandidates = candidates.filter(
     (candidate) =>
       candidate.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      candidate.party.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+      candidate.party.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="space-y-4">
@@ -34,7 +41,7 @@ export function CandidateRankings({ candidates }: CandidateRankingsProps) {
         />
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border-none">
         <Table>
           <TableHeader>
             <TableRow>
@@ -62,7 +69,10 @@ export function CandidateRankings({ candidates }: CandidateRankingsProps) {
                       <div className="flex items-center gap-2">
                         <div className="relative w-8 h-8 rounded-full overflow-hidden">
                           <Image
-                            src={candidate.image_url || `/placeholder.svg?height=32&width=32`}
+                            src={
+                              candidate.photo_url ||
+                              `/placeholder.svg?height=32&width=32`
+                            }
                             alt={candidate.name}
                             fill
                             className="object-cover"
@@ -72,7 +82,9 @@ export function CandidateRankings({ candidates }: CandidateRankingsProps) {
                       </div>
                     </TableCell>
                     <TableCell>{candidate.party}</TableCell>
-                    <TableCell className="text-right">{candidate.like_count}</TableCell>
+                    <TableCell className="text-right">
+                      {candidate.like_count}
+                    </TableCell>
                     <TableCell>
                       <Link href={`/candidates/${candidate.id}`}>
                         <Button variant="ghost" size="sm">
@@ -87,5 +99,5 @@ export function CandidateRankings({ candidates }: CandidateRankingsProps) {
         </Table>
       </div>
     </div>
-  )
+  );
 }

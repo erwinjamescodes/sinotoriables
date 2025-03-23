@@ -13,7 +13,7 @@ export default async function AnalyticsPage() {
   const { candidatesWithLikes, timelineData } = await getAnalyticsData();
 
   return (
-    <div className="container py-8">
+    <div className="container py-8 ">
       <div className="space-y-8">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">
@@ -26,19 +26,12 @@ export default async function AnalyticsPage() {
         </div>
 
         {/* <div className="grid gap-6 md:grid-cols-2"> */}
-        <div className="">
-          <div className="p-6 bg-card rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold mb-4">Likes Timeline</h2>
-            <LikesTimeline data={timelineData} />
-          </div>
-
-          {/* <div className="p-6 bg-card rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold mb-4">Party Distribution</h2>
-            <PartyDistribution candidates={candidatesWithLikes} />
-          </div> */}
+        <div className="bg-card border rounded-lg p-4">
+          <h2 className="text-xl font-semibold mb-4">Likes Timeline</h2>
+          <LikesTimeline data={timelineData} />
         </div>
 
-        <div className="p-6 bg-card rounded-lg shadow-sm">
+        <div className="p-4 bg-card border rounded-lg ">
           <h2 className="text-xl font-semibold mb-4">Candidate Rankings</h2>
           <CandidateRankings candidates={candidatesWithLikes} />
         </div>
