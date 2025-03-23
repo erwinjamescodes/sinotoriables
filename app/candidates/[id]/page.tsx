@@ -44,7 +44,7 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
     const isLiked = likedCandidates.includes(candidate.id);
 
     return (
-      <div className="container py-8">
+      <div className="container py-8 px-4">
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-1">
             <Card>

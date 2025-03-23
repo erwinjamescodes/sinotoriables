@@ -5,6 +5,8 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import type { CandidateWithLikes } from "@/lib/supabase";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Vote } from "lucide-react";
+// import { Vote } from "lucide-react";
 
 interface CandidateCardProps {
   candidate: CandidateWithLikes;
@@ -58,24 +60,24 @@ export function CandidateCard({
           }`}
         />
       </div>
-      <CardContent className="p-4">
-        <div className=" flex items-center gap-2">
+      <CardContent className="p-2 md:p-4">
+        <div className=" flex md:items-center gap-2">
           <div
             onClick={handleLike}
-            className={`h-4 w-4 border-2 rounded-full border-black ${
+            className={`h-4 w-4 border-2 mt-[2px] md:mt-0 rounded-full border-black ${
               isLiked ? "bg-black text-white" : ""
             } ${
               disabled && !isLiked ? "cursor-not-allowed" : "cursor-pointer"
             }`}
           />
-          <h3 className="font-medium text-lg flex items-center gap-2">
+          <h3 className="font-medium text-sm md:text-lg flex items-center gap-2">
             {candidate.id}. {candidate.name}
           </h3>
         </div>
-        <p className="text-sm text-muted-foreground">{candidate.party}</p>
+        <p className="text-sm text-muted-foreground pl-6">{candidate.party}</p>
         <p className="mt-2 text-sm line-clamp-3">{candidate.bio}</p>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex justify-between">
+      <CardFooter className="p-2 md:p-4 pt-0 flex justify-between">
         <Link
           href={`/candidates/${candidate.id}`}
           className="text-sm font-medium text-primary hover:underline"
@@ -88,7 +90,12 @@ export function CandidateCard({
           className="gap-1 hover:bg-transparent cursor-default"
           disabled={isLoading}
         >
-          <span>Votes: {candidate.like_count || 0}</span>
+          <span className="hidden md:block">
+            Votes: {candidate.like_count || 0}
+          </span>
+          <span className="md:hidden flex items-center gap-1">
+            <Vote className="w-4 h-4" /> {candidate.like_count || 0}
+          </span>
         </Button>
       </CardFooter>
     </Card>

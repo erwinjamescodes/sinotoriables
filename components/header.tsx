@@ -16,15 +16,10 @@ export default function Header() {
     <header className="border-b bg-primary text-white px-4 sm:px-6 md:px-8 lg:px-24">
       <div className="flex h-16 items-center justify-between mx-auto">
         <div className="flex items-center gap-6 justify-between w-full">
-          <Link
-            href="/"
-            className={`flex items-center gap-2 ${
-              pathname === "/" ? "border-b-2 border-white pb-1" : ""
-            }`}
-          >
+          <Link href="/" className={`flex items-center gap-2`}>
             <span className="text-xl font-bold">SinoToriables PH</span>
           </Link>
-          
+
           {/* Desktop Navigation */}
           <nav className="hidden md:flex gap-6">
             <Link
@@ -60,17 +55,17 @@ export default function Header() {
               About
             </Link>
           </nav>
-          
+
           {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden text-white focus:outline-none" 
+          <button
+            className="md:hidden text-white focus:outline-none"
             onClick={toggleMobileMenu}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
-      
+
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-primary py-4 px-4 border-t border-gray-700">
