@@ -33,21 +33,16 @@ export function CandidateFilters() {
   ];
 
   return (
-    <div className="flex flex-col gap-4 md:flex-row md:items-end flex-1">
-      <div className="flex-1 space-y-1">
-        {/* <label htmlFor="search" className="text-sm font-medium">
-          Search
-        </label> */}
-        <div className="relative">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            id="search"
-            placeholder="Search candidates..."
-            className="pl-8"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
+    <div className="w-full">
+      <div className="relative">
+        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Input
+          id="search"
+          placeholder="Search candidates..."
+          className="pl-8 w-full"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
       </div>
     </div>
   );

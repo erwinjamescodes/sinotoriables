@@ -184,29 +184,13 @@ export default function CandidatesPage({
               Senate.
             </p>
           </div>
-          <div>
-            <div className="flex flex-row items-center gap-2">
-              <Button variant="outline" onClick={() => router.push("/my-list")}>
-                <UserRoundCheck className="w-4 h-4 mr-2 sm:mr-1" />
-                <span className="whitespace-nowrap">
-                  My List ({likedCandidates.length}/{MAX_VOTES})
-                </span>
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row justify-between gap-4">
-          <CandidateFilters />
           <div className="relative flex items-center p-0 bg-gray-100 rounded-lg overflow-hidden self-start mt-4 sm:mt-0">
-            {/* Background slider that moves based on the active view */}
             <div
               className={`absolute top-1 bottom-1 w-1/2 bg-black rounded-md transition-all duration-300 ease-in-out ${
                 viewMode === "cards" ? "left-1" : "left-[calc(50%-1px)]"
               }`}
             />
 
-            {/* Cards view button */}
             <Button
               variant="ghost"
               size="sm"
@@ -221,7 +205,6 @@ export default function CandidatesPage({
               Cards View
             </Button>
 
-            {/* Ballot view button */}
             <Button
               variant="ghost"
               size="sm"
@@ -234,6 +217,23 @@ export default function CandidatesPage({
             >
               <List className="w-4 h-4 mr-1" />
               Ballot View
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex flex-row justify-between items-center gap-4">
+          <div className="flex-1">
+            <CandidateFilters />
+          </div>
+          <div className="flex-shrink-0">
+            <Button variant="outline" onClick={() => router.push("/my-list")}>
+              <UserRoundCheck className="w-4 h-4 mr-0 md:mr-2 " />
+              <span className="hidden md:block">
+                My List ({likedCandidates.length}/{MAX_VOTES})
+              </span>
+              <span className="block md:hidden">
+                {likedCandidates.length}/{MAX_VOTES}
+              </span>
             </Button>
           </div>
         </div>
