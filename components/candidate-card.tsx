@@ -48,16 +48,18 @@ export function CandidateCard({
     <Card
       className={`overflow-hidden ${
         isLiked ? "border-primary border-2 border-black" : ""
-      } ${disabled && !isLiked ? "opacity-50" : ""}`}
+      } ${disabled && !isLiked ? "opacity-50" : ""} ${
+        disabled ? "cursor-not-allowed" : "cursor-pointer"
+      }`}
     >
-      <div className="aspect-[3/4] relative group hover:cursor-pointer">
+      <div className="aspect-[3/4] relative group ">
         <Image
           src={candidate.photo_url || `/placeholder.svg?height=400&width=300`}
           alt={candidate.name}
           fill
-          className={`object-cover filter transition-all duration-300 ease-in-out ${
+          className={`object-cover filter transition-all duration-300 ease-in-out  ${
             isLiked ? "grayscale-0" : "grayscale"
-          }`}
+          } ${disabled && !isLiked ? "" : "hover:grayscale-0"}`}
         />
       </div>
       <CardContent className="p-2 md:p-4">

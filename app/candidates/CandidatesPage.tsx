@@ -456,8 +456,8 @@ export default function CandidatesPage({
               Congratulations!
             </DialogTitle>
             <DialogDescription className="text-center pt-2">
-              You have completed your 12/12 votes for the senatorial candidates.
-              Thank you for participating in this democratic exercise!
+              You have casted your 12/12 votes for the senatorial survey. Thank
+              you for participating in this democratic exercise!
             </DialogDescription>
           </DialogHeader>
 
