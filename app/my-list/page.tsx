@@ -18,12 +18,5 @@ export default async function Page() {
     likedCandidates.includes(candidate.id)
   );
 
-  return (
-    <div className="">
-      <MyListPage
-        likedCandidatesData={likedCandidatesData}
-        likedCandidateIds={likedCandidates}
-      />
-    </div>
-  );
+  return <MyListPage likedCandidatesData={likedCandidatesData} />;
 }

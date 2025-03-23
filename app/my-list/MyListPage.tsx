@@ -9,13 +9,10 @@ import html2canvas from "html2canvas";
 
 export default function MyListPage({
   likedCandidatesData,
-  likedCandidateIds,
 }: {
   likedCandidatesData: CandidateWithLikes[];
-  likedCandidateIds: number[];
 }) {
   const [candidates] = useState(likedCandidatesData);
-  const [likedCandidates] = useState(likedCandidateIds);
   const [isCapturing, setIsCapturing] = useState(false);
   const { toast } = useToast();
   const ballotRef = useRef<HTMLDivElement>(null);
@@ -42,7 +39,9 @@ export default function MyListPage({
       // Convert to data URL and download
       const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
       const link = document.createElement("a");
-      link.download = `my-ballot-${new Date().toISOString().split("T")[0]}.jpg`;
+      link.download = `sinotoriables-my-ballot-${
+        new Date().toISOString().split("T")[0]
+      }.jpg`;
       link.href = dataUrl;
       link.click();
 
@@ -67,9 +66,9 @@ export default function MyListPage({
   };
 
   return (
-    <div className="container py-8">
-      <div className="flex flex-col gap-6">
-        <div className="flex justify-between items-center">
+    <div className="container py-8 h-full w-full">
+      <div className="flex flex-col gap-6h-full w-full ">
+        <div className="flex justify-between items-start mb-6">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold tracking-tight">My List</h1>
             <p className="text-muted-foreground">
@@ -77,24 +76,23 @@ export default function MyListPage({
               election day.
             </p>
           </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <Link href="/candidates">
-            <Button variant="outline" className="gap-2">
-              <ArrowLeft size={16} />
-              Back to All Candidates
+          <div className="flex justify-between items-center gap-2">
+            <Link href="/candidates">
+              <Button variant="outline" className="gap-2">
+                <ArrowLeft size={16} />
+                Back to All Candidates
+              </Button>
+            </Link>
+            <Button
+              variant="outline"
+              className="gap-2"
+              onClick={captureAndDownload}
+              disabled={isCapturing || candidates.length === 0}
+            >
+              {isCapturing ? "Processing..." : "Save List as Image"}
+              {!isCapturing && <Camera size={16} />}
             </Button>
-          </Link>{" "}
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2"
-            onClick={captureAndDownload}
-            disabled={isCapturing || candidates.length === 0}
-          >
-            {isCapturing ? "Processing..." : "Save List as Image"}
-            {!isCapturing && <Camera size={16} />}
-          </Button>
+          </div>
         </div>
 
         {candidates.length === 0 ? (
@@ -111,9 +109,8 @@ export default function MyListPage({
           </div>
         ) : (
           <div ref={ballotRef}>
-            <div className="flex flex-col h-24 w-full bg-green-100 border border-b-0 border-black items-start justify-center pl-4">
+            <div className="flex flex-col h-12 w-full bg-green-100 border border-b-0 border-black items-start justify-center pl-4">
               <p className="text-lg font-semibold">My 2025 Senators</p>
-              <p>(Mga kandidatong iyong pinili)</p>
             </div>
             <div className="border-t border-l border-black">
               {/* Single column layout */}
@@ -121,9 +118,9 @@ export default function MyListPage({
                 {sortedCandidates.map((candidate) => (
                   <div
                     key={candidate.id}
-                    className="flex items-center border-r border-b border-black p-3 bg-gray-100"
+                    className="flex items-center border-r border-b border-black p-3 "
                   >
-                    <div className="w-6 h-6 min-w-6 flex items-center justify-center border-2 border-black rounded-full bg-black mr-3" />
+                    {/* <div className="w-6 h-6 min-w-6 flex items-center justify-center border-2 border-black rounded-full bg-black mr-3" /> */}
                     <div className="font-medium">
                       {candidate.id}. {candidate.name}{" "}
                       <span className="text-gray-500 text-xs uppercase">

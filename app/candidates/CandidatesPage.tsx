@@ -4,10 +4,11 @@ import { CandidateCard } from "@/components/candidate-card";
 import { CandidateFilters } from "@/components/candidate-filters";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { LayoutGrid, List } from "lucide-react";
+import { LayoutGrid, List, UserRoundCheck } from "lucide-react";
 import { CandidateWithLikes } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Moved metadata to separate page.js file
 
@@ -23,6 +24,7 @@ export default function CandidatesPage({
   const [likedCandidates, setLikedCandidates] = useState(likedCandidatesData);
   const [isLoading, setIsLoading] = useState<number | null>(null);
   const { toast } = useToast();
+  const router = useRouter();
 
   // Maximum number of candidates a user can vote for
   const MAX_VOTES = 12;
@@ -182,41 +184,51 @@ export default function CandidatesPage({
               Senate.
             </p>
           </div>
-          <div className="flex flex-col items-end gap-2">
-            <p
-              className={`text-lg font-bold ${
-                hasReachedMaxVotes ? "text-red-500" : "text-green-500"
-              }`}
-            >
-              {likedCandidates.length}/{MAX_VOTES} votes used
-            </p>
-            {likedCandidates.length > 0 && (
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/my-list" className="flex items-center gap-2">
-                  View My List
-                </Link>
+          <div>
+            <div className="flex flex-row items-center gap-2">
+              <Button variant="outline" onClick={() => router.push("/my-list")}>
+                <UserRoundCheck className="w-4 h-4" />
+                View My List ({likedCandidates.length}/{MAX_VOTES})
               </Button>
-            )}
+            </div>
           </div>
         </div>
 
         <div className="flex flex-row justify-between gap-4">
           <CandidateFilters />
-          <div className="flex items-center space-x-0">
+          <div className="relative flex items-center p-0 bg-gray-100 rounded-lg overflow-hidden">
+            {/* Background slider that moves based on the active view */}
+            <div
+              className={`absolute top-1 bottom-1 w-1/2 bg-black rounded-md transition-all duration-300 ease-in-out ${
+                viewMode === "cards" ? "left-1" : "left-[calc(50%-1px)]"
+              }`}
+            />
+
+            {/* Cards view button */}
             <Button
-              variant={viewMode === "cards" ? "default" : "secondary"}
+              variant="ghost"
               size="sm"
               onClick={() => setViewMode("cards")}
-              className="flex items-center"
+              className={`relative z-10 flex items-center justify-center w-1/2 rounded-md transition-colors duration-300 hover:bg-transparent  ${
+                viewMode === "cards"
+                  ? "text-white hover:text-white"
+                  : "text-gray-700 hover:text-gray-700"
+              }`}
             >
               <LayoutGrid className="w-4 h-4 mr-1" />
               Cards View
             </Button>
+
+            {/* Ballot view button */}
             <Button
-              variant={viewMode === "ballot" ? "default" : "secondary"}
+              variant="ghost"
               size="sm"
               onClick={() => setViewMode("ballot")}
-              className="flex items-center"
+              className={`relative z-10 flex items-center justify-center w-1/2 rounded-md transition-colors duration-300 hover:bg-transparent ${
+                viewMode === "ballot"
+                  ? "text-white hover:text-white"
+                  : "text-gray-700 hover:text-gray-700"
+              }`}
             >
               <List className="w-4 h-4 mr-1" />
               Ballot View
@@ -246,11 +258,11 @@ export default function CandidatesPage({
 
           {viewMode === "ballot" && (
             <div>
-              <div className="flex flex-col h-24 w-full bg-green-100 border border-b-0 border-black items-center justify-center">
+              <div className="flex flex-col h-24 w-full bg-green-100 border border-b-0 border-black items-center justify-center rounded-t-lg">
                 <p>SENATOR / Vote for 12</p>
                 <p>(Bumoto ng hindi hihigit sa 12)</p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 border-t border-l border-black">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 border-t border-l border-black ">
                 {columns.map((columnCandidates, columnIndex) => (
                   <div key={columnIndex} className="flex flex-col">
                     {columnCandidates.map((candidate, candidateIndex) => {
