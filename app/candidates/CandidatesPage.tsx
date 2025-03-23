@@ -31,6 +31,7 @@ export default function CandidatesPage({
   candidatesData: CandidateWithLikes[];
   likedCandidatesData: number[];
 }) {
+  // Initialize with default, but will be updated from localStorage if available
   const [viewMode, setViewMode] = useState("cards"); // 'cards' or 'ballot'
   const [candidates, setCandidates] = useState(candidatesData);
   const [likedCandidates, setLikedCandidates] = useState(likedCandidatesData);
@@ -38,6 +39,7 @@ export default function CandidatesPage({
   const [isMobile, setIsMobile] = useState(false);
   const [showCongratulationsModal, setShowCongratulationsModal] =
     useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -57,6 +59,20 @@ export default function CandidatesPage({
     return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
+  // Load saved view mode from localStorage on component mount
+  useEffect(() => {
+    // Only run in browser environment
+    if (typeof window !== "undefined") {
+      const savedViewMode = localStorage.getItem("candidatesViewMode");
+      if (
+        savedViewMode &&
+        (savedViewMode === "cards" || savedViewMode === "ballot")
+      ) {
+        setViewMode(savedViewMode);
+      }
+    }
+  }, []);
+
   // Scroll to top function for "Back to top" button
   const scrollToTop = () => {
     window.scrollTo({
@@ -64,6 +80,23 @@ export default function CandidatesPage({
       behavior: "smooth",
     });
   };
+
+  // Add scroll event listener to detect when to show back to top button
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollThreshold = 300;
+      setShowBackToTop(window.scrollY > scrollThreshold);
+    };
+
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll);
+
+    // Initial check
+    handleScroll();
+
+    // Clean up
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Maximum number of candidates a user can vote for
   const MAX_VOTES = 12;
@@ -162,16 +195,18 @@ export default function CandidatesPage({
       }
 
       // Show appropriate toast message
-      toast({
-        title: serverIsLiked ? "Voted!" : "Vote removed",
-        description: serverIsLiked
-          ? `You've successfully voted for ${candidateName}. ${newLikedCandidates.length}/${MAX_VOTES} votes used.`
-          : `You've removed your vote for ${candidateName}. ${newLikedCandidates.length}/${MAX_VOTES} votes used.`,
-        className: serverIsLiked
-          ? "border-t-0 border-l-0 border-r-0 border-b-4 border-green-500 mb-2"
-          : "border-t-0 border-l-0 border-r-0 border-b-4 border-red-500 mb-2",
-        duration: 1000, // Close after 3 seconds
-      });
+      if (newLikedCandidates.length !== MAX_VOTES) {
+        toast({
+          title: serverIsLiked ? "Voted!" : "Vote removed",
+          description: serverIsLiked
+            ? `You've successfully voted for ${candidateName}. ${newLikedCandidates.length}/${MAX_VOTES} votes used.`
+            : `You've removed your vote for ${candidateName}. ${newLikedCandidates.length}/${MAX_VOTES} votes used.`,
+          className: serverIsLiked
+            ? "border-t-0 border-l-0 border-r-0 border-b-4 border-green-500 mb-2"
+            : "border-t-0 border-l-0 border-r-0 border-b-4 border-red-500 mb-2",
+          duration: 1000, // Close after 3 seconds
+        });
+      }
 
       // Show congratulations modal when user reaches MAX_VOTES
       if (serverIsLiked && newLikedCandidates.length === MAX_VOTES) {
@@ -215,6 +250,15 @@ export default function CandidatesPage({
     }
   };
 
+  // Function to update view mode and save to localStorage
+  const updateViewMode = (mode: "cards" | "ballot") => {
+    setViewMode(mode);
+    // Save to localStorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem("candidatesViewMode", mode);
+    }
+  };
+
   // Component for the view toggle buttons
   const ViewToggle = () => (
     <div className="relative flex items-center p-0 bg-gray-100 rounded-lg overflow-hidden">
@@ -229,7 +273,7 @@ export default function CandidatesPage({
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => setViewMode("cards")}
+        onClick={() => updateViewMode("cards")}
         className={`relative z-10 flex items-center justify-center w-1/2 rounded-md transition-colors duration-300 hover:bg-transparent ${
           viewMode === "cards"
             ? "text-white hover:text-white"
@@ -244,7 +288,7 @@ export default function CandidatesPage({
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => setViewMode("ballot")}
+        onClick={() => updateViewMode("ballot")}
         className={`relative z-10 flex items-center justify-center w-1/2 rounded-md transition-colors duration-300 hover:bg-transparent ${
           viewMode === "ballot"
             ? "text-white hover:text-white"
@@ -383,6 +427,19 @@ export default function CandidatesPage({
             onClick={scrollToTop}
           >
             <ChevronUp className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
+      {/* Back to top button for desktop view - only shows after scrolling */}
+      {!isMobile && showBackToTop && viewMode === "cards" && (
+        <div className="fixed bottom-6 right-6 z-50 transition-opacity duration-300">
+          <Button
+            variant="outline"
+            className="rounded-full shadow-md bg-white hover:bg-gray-100"
+            onClick={scrollToTop}
+          >
+            Back to top <ChevronUp className="h-5 w-5 ml-1" />
           </Button>
         </div>
       )}
