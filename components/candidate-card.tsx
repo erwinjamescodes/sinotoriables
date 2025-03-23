@@ -3,97 +3,62 @@ import Link from "next/link";
 import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import type { CandidateWithLikes } from "@/lib/supabase";
-import { useState } from "react";
-import { toggleLike } from "@/app/actions";
-import { useToast } from "@/hooks/use-toast";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 interface CandidateCardProps {
   candidate: CandidateWithLikes;
   isLiked?: boolean;
+  disabled?: boolean;
+  onLike?: (candidateId: number) => Promise<void>;
 }
 
 export function CandidateCard({
   candidate,
   isLiked = false,
+  disabled = false,
+  onLike,
 }: CandidateCardProps) {
-  const [liked, setLiked] = useState(isLiked);
-  const [likes, setLikes] = useState(candidate.like_count || 0);
+  // Use the isLiked prop directly instead of maintaining internal state
+  // This ensures the component reflects the parent's state
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
 
+  // Handle the like action by calling the parent's onLike function
   const handleLike = async () => {
-    setIsLoading(true);
-    try {
-      // Toggle like state optimistically
-      const newIsLiked = !liked;
-      const likeDelta = newIsLiked ? 1 : -1;
-
-      // Update UI immediately for better UX
-      setLiked(newIsLiked);
-      setLikes((prev) => Math.max(0, prev + likeDelta));
-
-      // Make the API call
-      const result = await toggleLike(candidate.id);
-
-      // Confirm state based on server response
-      const serverIsLiked = result.action === "liked";
-
-      // If server result doesn't match our optimistic update, fix it
-      if (serverIsLiked !== newIsLiked) {
-        setLiked(serverIsLiked);
-        setLikes((prev) =>
-          Math.max(0, prev + (serverIsLiked ? 1 : -1) - likeDelta)
-        );
+    // If disabled and not already liked, don't allow new likes
+    if (disabled && !isLiked) {
+      return;
+    }
+    
+    if (onLike) {
+      setIsLoading(true);
+      try {
+        await onLike(candidate.id);
+      } catch (error) {
+        console.error("Error in CandidateCard handleLike:", error);
+      } finally {
+        setIsLoading(false);
       }
-
-      // Show appropriate toast message
-      toast({
-        title: serverIsLiked ? "Liked!" : "Like removed",
-        description: serverIsLiked
-          ? "You've successfully liked this candidate."
-          : "You've removed your like from this candidate.",
-      });
-    } catch (error) {
-      console.error("Like error:", error);
-
-      // Revert optimistic update on error
-      setLiked(!liked);
-      setLikes((prev) => Math.max(0, prev + (liked ? 1 : -1)));
-
-      toast({
-        title: "Error",
-        description: "There was an error processing your like.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
     }
   };
 
   return (
     <Card
-      className={`overflow-hidden  ${
-        liked ? "border-primary border-2 border-black" : ""
-      }`}
+      className={`overflow-hidden ${isLiked ? "border-primary border-2 border-black" : ""} ${disabled && !isLiked ? "opacity-50" : ""}`}
     >
       <div className="aspect-[3/4] relative group hover:cursor-pointer">
         <Image
           src={candidate.photo_url || `/placeholder.svg?height=400&width=300`}
           alt={candidate.name}
           fill
-          className={`object-cover filter transition-all duration-300 ease-in-out ${
-            liked ? "grayscale-0" : "grayscale"
-          }`}
+          className={`object-cover filter transition-all duration-300 ease-in-out ${isLiked ? "grayscale-0" : "grayscale"}`}
         />
       </div>
       <CardContent className="p-4">
         <div className=" flex items-center gap-2">
           <div
             onClick={handleLike}
-            className={`h-4 w-4 border-2 rounded-full border-black ${
-              liked ? "bg-black text-white" : ""
-            }`}
+            className={`h-4 w-4 border-2 rounded-full border-black ${isLiked ? "bg-black text-white" : ""} ${disabled && !isLiked ? "cursor-not-allowed" : "cursor-pointer"}`}
           />
           <h3 className="font-medium text-lg flex items-center gap-2">
             {candidate.id}. {candidate.name}
@@ -115,7 +80,7 @@ export function CandidateCard({
           className="gap-1 hover:bg-transparent cursor-default"
           disabled={isLoading}
         >
-          <span>Votes: {likes}</span>
+          <span>Votes: {candidate.like_count || 0}</span>
         </Button>
       </CardFooter>
     </Card>
