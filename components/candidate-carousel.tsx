@@ -12,6 +12,7 @@ export async function CandidateCarousel() {
     .order("like_count", { ascending: false })
     .limit(4);
 
+  console.log("CANDIDATES", candidates);
   if (error) {
     console.error("Error fetching candidates:", error);
     return <div>Failed to load candidates</div>;

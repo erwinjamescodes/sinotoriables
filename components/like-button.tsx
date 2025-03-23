@@ -12,7 +12,11 @@ interface LikeButtonProps {
   isLiked: boolean;
 }
 
-export function LikeButton({ candidateId, initialLikes, isLiked: initialIsLiked }: LikeButtonProps) {
+export function LikeButton({
+  candidateId,
+  initialLikes,
+  isLiked: initialIsLiked,
+}: LikeButtonProps) {
   const [likes, setLikes] = useState(initialLikes || 0);
   const [isLiked, setIsLiked] = useState(initialIsLiked);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,8 +79,10 @@ export function LikeButton({ candidateId, initialLikes, isLiked: initialIsLiked 
       onClick={handleLike}
       disabled={isLoading}
     >
-      <Heart
-        className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : ""}`}
+      <div
+        className={`h-4 w-4 border-2 rounded-full border-black ${
+          isLiked ? "bg-black text-white" : ""
+        }`}
       />
       <span>{likes}</span>
     </Button>

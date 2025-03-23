@@ -12,19 +12,19 @@ export default function Header() {
           <nav className="hidden md:flex gap-6">
             <Link
               href="/candidates"
-              className="text-sm font-medium transition-colors hover:text-primary hover:text-gray-400"
+              className="text-sm font-medium transition-colors hover:text-gray-300"
             >
               Candidates
             </Link>
             <Link
               href="/analytics"
-              className="text-sm font-medium transition-colors hover:text-primary hover:text-gray-400"
+              className="text-sm font-medium transition-colors hover:text-gray-300"
             >
               Analytics
             </Link>
             <Link
               href="/about"
-              className="text-sm font-medium transition-colors hover:text-primary hover:text-gray-400"
+              className="text-sm font-medium transition-colorshover:text-gray-300"
             >
               About
             </Link>

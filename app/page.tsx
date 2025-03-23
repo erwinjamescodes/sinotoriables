@@ -11,8 +11,8 @@ export default async function Home() {
       <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-blue-50 to-white flex justify-center">
         <div className="container px-4 md:px-0">
           <div className="grid lg:grid-cols-2 items-center">
-            <div className="flex flex-col justify-center space-y-4 mb-8">
-              <div className="space-y-2">
+            <div className="flex flex-col justify-center gap-8 mb-8">
+              <div className="space-y-6">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-3xl xl:text-6xl pr-8 md:pr-0">
                   Kilalanin at kilatisin kung sinu-sino ang mga tumatakbo sa
                   pagka-Senador ngayong 2025
