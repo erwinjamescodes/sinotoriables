@@ -137,8 +137,7 @@ export default function MyListPage({
 
       toast({
         title: "Success!",
-        description:
-          "Your ballot has been saved as a portrait mobile-sized image.",
+        description: "Your sample ballot has been saved. Vote wisely!",
         className:
           "border-t-0 border-l-0 border-r-0 border-b-4 border-green-500 mb-2",
         duration: 1000,

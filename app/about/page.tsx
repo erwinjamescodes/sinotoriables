@@ -6,7 +6,7 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <div className="container py-8">
-      <div className="max-w-3xl mx-auto space-y-8">
+      <div className="mx-auto space-y-8">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">
             About SinoToriables PH
