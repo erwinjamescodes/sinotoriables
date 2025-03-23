@@ -5,7 +5,7 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="container py-8">
+    <div className="container py-8 px-4 sm:px-6">
       <div className="mx-auto space-y-8">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">
@@ -16,7 +16,7 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="prose max-w-none dark:prose-invert">
+        <div className="prose max-w-none dark:prose-invert prose-img:mx-auto prose-img:max-w-full">
           <h2>Our Mission</h2>
           <p>
             SinoToriables PH aims to provide a transparent and accessible

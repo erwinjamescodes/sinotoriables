@@ -174,7 +174,7 @@ export default function CandidatesPage({
   return (
     <div className="py-8 w-full">
       <div className="flex flex-col gap-6">
-        <div className="flex justify-between">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold tracking-tight">
               Senatorial Candidates
@@ -187,16 +187,18 @@ export default function CandidatesPage({
           <div>
             <div className="flex flex-row items-center gap-2">
               <Button variant="outline" onClick={() => router.push("/my-list")}>
-                <UserRoundCheck className="w-4 h-4" />
-                View My List ({likedCandidates.length}/{MAX_VOTES})
+                <UserRoundCheck className="w-4 h-4 mr-2 sm:mr-1" />
+                <span className="whitespace-nowrap">
+                  My List ({likedCandidates.length}/{MAX_VOTES})
+                </span>
               </Button>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-row justify-between gap-4">
+        <div className="flex flex-col sm:flex-row justify-between gap-4">
           <CandidateFilters />
-          <div className="relative flex items-center p-0 bg-gray-100 rounded-lg overflow-hidden">
+          <div className="relative flex items-center p-0 bg-gray-100 rounded-lg overflow-hidden self-start mt-4 sm:mt-0">
             {/* Background slider that moves based on the active view */}
             <div
               className={`absolute top-1 bottom-1 w-1/2 bg-black rounded-md transition-all duration-300 ease-in-out ${
@@ -238,7 +240,7 @@ export default function CandidatesPage({
 
         <div className="w-full mx-auto">
           {viewMode === "cards" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
               {candidates.map((candidate) => {
                 const isLiked = likedCandidates.includes(candidate.id);
                 const canVote = isLiked || !hasReachedMaxVotes;
@@ -257,57 +259,61 @@ export default function CandidatesPage({
           )}
 
           {viewMode === "ballot" && (
-            <div>
+            <div className="w-full">
               <div className="flex flex-col h-24 w-full bg-green-100 border border-b-0 border-black items-center justify-center rounded-t-lg">
                 <p>SENATOR / Vote for 12</p>
                 <p>(Bumoto ng hindi hihigit sa 12)</p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 border-t border-l border-black ">
-                {columns.map((columnCandidates, columnIndex) => (
-                  <div key={columnIndex} className="flex flex-col">
-                    {columnCandidates.map((candidate, candidateIndex) => {
-                      const isLiked = likedCandidates.includes(candidate.id);
-                      const canVote = isLiked || !hasReachedMaxVotes;
+              <div className="overflow-x-auto">
+                <div className="md:min-w-[640px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 border-t border-l border-black">
+                  {columns.map((columnCandidates, columnIndex) => (
+                    <div key={columnIndex} className="flex flex-col">
+                      {columnCandidates.map((candidate, candidateIndex) => {
+                        const isLiked = likedCandidates.includes(candidate.id);
+                        const canVote = isLiked || !hasReachedMaxVotes;
 
-                      // Determine if this is the last column
-                      const isLastColumn = columnIndex === columns.length - 1;
-                      // Determine if this is the last item in the column
-                      const isLastInColumn =
-                        candidateIndex === columnCandidates.length - 1;
+                        // Determine if this is the last column
+                        const isLastColumn = columnIndex === columns.length - 1;
+                        // Determine if this is the last item in the column
+                        const isLastInColumn =
+                          candidateIndex === columnCandidates.length - 1;
 
-                      return (
-                        <div
-                          key={candidate.id}
-                          className={`flex items-center border-r border-b border-black p-2 hover:bg-gray-50 ${
-                            isLiked ? "bg-gray-100" : ""
-                          } ${!canVote ? "opacity-50" : ""}`}
-                        >
+                        return (
                           <div
-                            onClick={() =>
-                              canVote &&
-                              handleLike(candidate.id, candidate.name)
-                            }
-                            className={`w-6 h-6 flex items-center justify-center border-2 border-black rounded-full mr-2 ${
-                              canVote ? "cursor-pointer" : "cursor-not-allowed"
-                            } transition-all duration-300 ease-in-out ${
-                              isLiked ? "bg-black" : ""
-                            }`}
-                          />
-                          <div className="font-medium">
-                            {candidate.id}. {candidate.name}{" "}
-                            <span className="text-gray-500 text-xs uppercase">
-                              (
-                              {candidate.party === "Independent"
-                                ? "IND"
-                                : candidate.party}
-                              )
-                            </span>
+                            key={candidate.id}
+                            className={`flex items-center border-r border-b border-black p-2 hover:bg-gray-50 ${
+                              isLiked ? "bg-gray-100" : ""
+                            } ${!canVote ? "opacity-50" : ""}`}
+                          >
+                            <div
+                              onClick={() =>
+                                canVote &&
+                                handleLike(candidate.id, candidate.name)
+                              }
+                              className={`w-6 h-6 flex items-center justify-center border-2 border-black rounded-full mr-2 ${
+                                canVote
+                                  ? "cursor-pointer"
+                                  : "cursor-not-allowed"
+                              } transition-all duration-300 ease-in-out ${
+                                isLiked ? "bg-black" : ""
+                              }`}
+                            />
+                            <div className="font-medium">
+                              {candidate.id}. {candidate.name}{" "}
+                              <span className="text-gray-500 text-xs uppercase">
+                                (
+                                {candidate.party === "Independent"
+                                  ? "IND"
+                                  : candidate.party}
+                                )
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))}
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}

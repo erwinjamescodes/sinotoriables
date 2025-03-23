@@ -155,9 +155,9 @@ export default function MyListPage({
     }
   };
   return (
-    <div className="container py-8 h-full w-full">
-      <div className="flex flex-col gap-6h-full w-full ">
-        <div className="flex justify-between items-start mb-6">
+    <div className="container py-8 h-full w-full px-4 sm:px-6">
+      <div className="flex flex-col gap-6 h-full w-full">
+        <div className="flex flex-col sm:flex-row justify-between items-start mb-6 gap-4">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold tracking-tight">My List</h1>
             <p className="text-muted-foreground">
@@ -165,20 +165,20 @@ export default function MyListPage({
               election day.
             </p>
           </div>
-          <div className="flex justify-between items-center gap-2">
-            <Link href="/candidates">
-              <Button variant="outline" className="gap-2">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
+            <Link href="/candidates" className="w-full sm:w-auto">
+              <Button variant="outline" className="gap-2 w-full sm:w-auto justify-center">
                 <ArrowLeft size={16} />
-                Back to All Candidates
+                <span>Back to Candidates</span>
               </Button>
             </Link>
             <Button
               variant="outline"
-              className="gap-2"
+              className="gap-2 w-full sm:w-auto justify-center"
               onClick={captureAndDownload}
               disabled={isCapturing || candidates.length === 0}
             >
-              {isCapturing ? "Processing..." : "Save List as Image"}
+              {isCapturing ? "Processing..." : "Save as Image"}
               {!isCapturing && <Camera size={16} />}
             </Button>
           </div>
@@ -197,7 +197,7 @@ export default function MyListPage({
             </Link>
           </div>
         ) : (
-          <div ref={ballotRef}>
+          <div ref={ballotRef} className="max-w-full overflow-hidden">
             <div className="flex flex-col h-12 w-full bg-green-100 border border-b-0 border-black items-start justify-center pl-4">
               <p className="text-lg font-semibold">My 2025 Senators</p>
             </div>
@@ -207,10 +207,9 @@ export default function MyListPage({
                 {sortedCandidates.map((candidate) => (
                   <div
                     key={candidate.id}
-                    className="flex items-center border-r border-b border-black p-3 "
+                    className="flex items-center border-r border-b border-black p-3"
                   >
-                    {/* <div className="w-6 h-6 min-w-6 flex items-center justify-center border-2 border-black rounded-full bg-black mr-3" /> */}
-                    <div className="font-medium">
+                    <div className="font-medium truncate">
                       {candidate.id}. {candidate.name}{" "}
                       <span className="text-gray-500 text-xs uppercase">
                         (
