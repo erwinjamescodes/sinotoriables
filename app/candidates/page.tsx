@@ -14,7 +14,7 @@ export default async function Page() {
   const { likedCandidates } = await getUserLikes(candidateIds);
 
   return (
-    <div className="px-4 md:px-24 w-full">
+    <div className="container py-8 px-4 sm:px-6">
       <CandidatesPage
         candidatesData={candidates}
         likedCandidatesData={likedCandidates}

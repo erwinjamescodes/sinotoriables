@@ -25,7 +25,7 @@ export default function Header() {
             <Link
               href="/candidates"
               className={`text-sm font-medium transition-colors hover:text-gray-300 ${
-                pathname === "/candidates" ? "border-b-2 border-white pb-0" : ""
+                pathname === "/candidates" ? "text-gray-300 font-bold" : ""
               }`}
             >
               Candidates
@@ -33,7 +33,7 @@ export default function Header() {
             <Link
               href="/my-list"
               className={`text-sm font-medium transition-colors hover:text-gray-300 ${
-                pathname === "/my-list" ? "border-b-2 border-white pb-0" : ""
+                pathname === "/my-list" ? "text-gray-300 font-bold" : ""
               }`}
             >
               My List
@@ -41,7 +41,7 @@ export default function Header() {
             <Link
               href="/analytics"
               className={`text-sm font-medium transition-colors hover:text-gray-300 ${
-                pathname === "/analytics" ? "border-b-2 border-white pb-0" : ""
+                pathname === "/analytics" ? "text-gray-300 font-bold" : ""
               }`}
             >
               Analytics
@@ -49,7 +49,7 @@ export default function Header() {
             <Link
               href="/about"
               className={`text-sm transition-colors hover:text-gray-300 ${
-                pathname === "/about" ? "border-b-2 border-white pb-0" : ""
+                pathname === "/about" ? "text-gray-300 font-bold" : ""
               }`}
             >
               About
@@ -73,7 +73,7 @@ export default function Header() {
             <Link
               href="/candidates"
               className={`text-sm font-medium transition-colors hover:text-gray-300 py-2 ${
-                pathname === "/candidates" ? "border-l-4 border-white pl-2" : ""
+                pathname === "/candidates" ? "text-gray-300 font-bold" : ""
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -82,7 +82,7 @@ export default function Header() {
             <Link
               href="/my-list"
               className={`text-sm font-medium transition-colors hover:text-gray-300 py-2 ${
-                pathname === "/my-list" ? "border-l-4 border-white pl-2" : ""
+                pathname === "/my-list" ? "text-gray-300 font-bold" : ""
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -91,7 +91,7 @@ export default function Header() {
             <Link
               href="/analytics"
               className={`text-sm font-medium transition-colors hover:text-gray-300 py-2 ${
-                pathname === "/analytics" ? "border-l-4 border-white pl-2" : ""
+                pathname === "/analytics" ? "text-gray-300 font-bold" : ""
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -100,7 +100,7 @@ export default function Header() {
             <Link
               href="/about"
               className={`text-sm transition-colors hover:text-gray-300 py-2 ${
-                pathname === "/about" ? "border-l-4 border-white pl-2" : ""
+                pathname === "/about" ? "text-gray-300 font-bold" : ""
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >

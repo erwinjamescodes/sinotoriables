@@ -2,15 +2,13 @@
 import { toggleLike } from "@/app/actions";
 import { CandidateCard } from "@/components/candidate-card";
 import { CandidateFilters } from "@/components/candidate-filters";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { LayoutGrid, List, UserRoundCheck } from "lucide-react";
+import { LayoutGrid, List, UserRoundCheck, ChevronUp } from "lucide-react";
 import { CandidateWithLikes } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-// Moved metadata to separate page.js file
 
 export default function CandidatesPage({
   candidatesData,
@@ -23,8 +21,33 @@ export default function CandidatesPage({
   const [candidates, setCandidates] = useState(candidatesData);
   const [likedCandidates, setLikedCandidates] = useState(likedCandidatesData);
   const [isLoading, setIsLoading] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+
+  // Check if we're on mobile on component mount and when window resizes
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    // Check on mount
+    checkIsMobile();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkIsMobile);
+
+    // Clean up
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
+
+  // Scroll to top function for "Back to top" button
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   // Maximum number of candidates a user can vote for
   const MAX_VOTES = 12;
@@ -171,8 +194,50 @@ export default function CandidatesPage({
     }
   };
 
+  // Component for the view toggle buttons
+  const ViewToggle = () => (
+    <div className="relative flex items-center p-0 bg-gray-100 rounded-lg overflow-hidden">
+      {/* Background slider that moves based on the active view */}
+      <div
+        className={`absolute top-1 bottom-1 w-1/2 bg-black rounded-md transition-all duration-300 ease-in-out ${
+          viewMode === "cards" ? "left-1" : "left-[calc(50%-1px)]"
+        }`}
+      />
+
+      {/* Cards view button */}
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setViewMode("cards")}
+        className={`relative z-10 flex items-center justify-center w-1/2 rounded-md transition-colors duration-300 hover:bg-transparent ${
+          viewMode === "cards"
+            ? "text-white hover:text-white"
+            : "text-gray-700 hover:text-gray-700"
+        }`}
+      >
+        <LayoutGrid className="w-4 h-4 mr-1" />
+        Cards View
+      </Button>
+
+      {/* Ballot view button */}
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setViewMode("ballot")}
+        className={`relative z-10 flex items-center justify-center w-1/2 rounded-md transition-colors duration-300 hover:bg-transparent ${
+          viewMode === "ballot"
+            ? "text-white hover:text-white"
+            : "text-gray-700 hover:text-gray-700"
+        }`}
+      >
+        <List className="w-4 h-4 mr-1" />
+        Ballot View
+      </Button>
+    </div>
+  );
+
   return (
-    <div className="py-8 w-full">
+    <div className=" w-full relative">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
           <div className="space-y-2">
@@ -184,41 +249,8 @@ export default function CandidatesPage({
               Senate.
             </p>
           </div>
-          <div className="relative flex items-center p-0 bg-gray-100 rounded-lg overflow-hidden self-start mt-4 sm:mt-0">
-            <div
-              className={`absolute top-1 bottom-1 w-1/2 bg-black rounded-md transition-all duration-300 ease-in-out ${
-                viewMode === "cards" ? "left-1" : "left-[calc(50%-1px)]"
-              }`}
-            />
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setViewMode("cards")}
-              className={`relative z-10 flex items-center justify-center w-1/2 rounded-md transition-colors duration-300 hover:bg-transparent  ${
-                viewMode === "cards"
-                  ? "text-white hover:text-white"
-                  : "text-gray-700 hover:text-gray-700"
-              }`}
-            >
-              <LayoutGrid className="w-4 h-4 mr-1" />
-              Cards View
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setViewMode("ballot")}
-              className={`relative z-10 flex items-center justify-center w-1/2 rounded-md transition-colors duration-300 hover:bg-transparent ${
-                viewMode === "ballot"
-                  ? "text-white hover:text-white"
-                  : "text-gray-700 hover:text-gray-700"
-              }`}
-            >
-              <List className="w-4 h-4 mr-1" />
-              Ballot View
-            </Button>
-          </div>
+          {/* Only show view toggle in header for desktop */}
+          {!isMobile && <ViewToggle />}
         </div>
 
         <div className="flex flex-row justify-between items-center gap-4">
@@ -238,7 +270,7 @@ export default function CandidatesPage({
           </div>
         </div>
 
-        <div className="w-full mx-auto">
+        <div className="w-full mx-auto mb-20 sm:mb-0">
           {viewMode === "cards" && (
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
               {candidates.map((candidate) => {
@@ -271,12 +303,6 @@ export default function CandidatesPage({
                       {columnCandidates.map((candidate, candidateIndex) => {
                         const isLiked = likedCandidates.includes(candidate.id);
                         const canVote = isLiked || !hasReachedMaxVotes;
-
-                        // Determine if this is the last column
-                        const isLastColumn = columnIndex === columns.length - 1;
-                        // Determine if this is the last item in the column
-                        const isLastInColumn =
-                          candidateIndex === columnCandidates.length - 1;
 
                         return (
                           <div
@@ -319,6 +345,26 @@ export default function CandidatesPage({
           )}
         </div>
       </div>
+
+      {/* Fixed bottom navigation for mobile view */}
+      {isMobile && (
+        <div className="fixed bottom-0 left-0 right-0 p-3 bg-white border-t shadow-md z-50 flex justify-between items-center">
+          {/* View toggle on the left side */}
+          <div className="w-2/3 max-w-xs">
+            <ViewToggle />
+          </div>
+
+          {/* Back to top button on the right side */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full"
+            onClick={scrollToTop}
+          >
+            <ChevronUp className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

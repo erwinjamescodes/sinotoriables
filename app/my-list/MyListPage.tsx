@@ -155,9 +155,9 @@ export default function MyListPage({
     }
   };
   return (
-    <div className="container py-8 h-full w-full px-4 sm:px-6">
+    <div className="container py-8 h-full w-full px-4 md:px-6">
       <div className="flex flex-col gap-6 h-full w-full">
-        <div className="flex flex-col sm:flex-row justify-between items-start mb-6 gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start md:mb-6 gap-4">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold tracking-tight">My List</h1>
             <p className="text-muted-foreground">
@@ -167,19 +167,22 @@ export default function MyListPage({
           </div>
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
             <Link href="/candidates" className="w-full sm:w-auto">
-              <Button variant="outline" className="gap-2 w-full sm:w-auto justify-center">
+              <Button
+                variant="outline"
+                className="gap-2 w-full sm:w-auto justify-center"
+              >
                 <ArrowLeft size={16} />
                 <span>Back to Candidates</span>
               </Button>
             </Link>
             <Button
               variant="outline"
-              className="gap-2 w-full sm:w-auto justify-center"
+              className="gap-2 w-full sm:w-auto justify-center hidden md:flex"
               onClick={captureAndDownload}
               disabled={isCapturing || candidates.length === 0}
             >
-              {isCapturing ? "Processing..." : "Save as Image"}
               {!isCapturing && <Camera size={16} />}
+              {isCapturing ? "Processing..." : "Save List as Image"}
             </Button>
           </div>
         </div>
@@ -225,6 +228,15 @@ export default function MyListPage({
             </div>
           </div>
         )}
+
+        <Button
+          className="gap-2 w-full sm:w-auto justify-center flex md:hidden"
+          onClick={captureAndDownload}
+          disabled={isCapturing || candidates.length === 0}
+        >
+          {!isCapturing && <Camera size={16} />}
+          {isCapturing ? "Processing..." : "Save List as Image"}
+        </Button>
       </div>
     </div>
   );
