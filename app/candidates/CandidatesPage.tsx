@@ -34,6 +34,8 @@ export default function CandidatesPage({
   // Initialize with default, but will be updated from localStorage if available
   const [viewMode, setViewMode] = useState("cards"); // 'cards' or 'ballot'
   const [candidates, setCandidates] = useState(candidatesData);
+  const [filteredCandidates, setFilteredCandidates] = useState(candidatesData);
+  const [searchQuery, setSearchQuery] = useState("");
   const [likedCandidates, setLikedCandidates] = useState(likedCandidatesData);
   const [isLoading, setIsLoading] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -42,6 +44,30 @@ export default function CandidatesPage({
   const [showBackToTop, setShowBackToTop] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+
+  // Handle search functionality
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+
+    if (!query.trim()) {
+      // If search query is empty, show all candidates
+      setFilteredCandidates(candidates);
+    } else {
+      // Filter candidates based on search query
+      const filtered = candidates.filter((candidate) => {
+        const searchTerms = query.toLowerCase().split(" ");
+        const candidateName = candidate.name.toLowerCase();
+        const candidateParty = candidate.party?.toLowerCase() || "";
+
+        // Check if any search term is found in candidate name or party
+        return searchTerms.some(
+          (term) =>
+            candidateName.includes(term) || candidateParty.includes(term)
+        );
+      });
+      setFilteredCandidates(filtered);
+    }
+  };
 
   // Check if we're on mobile on component mount and when window resizes
   useEffect(() => {
@@ -264,7 +290,7 @@ export default function CandidatesPage({
     <div className="relative flex items-center p-0 bg-gray-100 rounded-lg overflow-hidden">
       {/* Background slider that moves based on the active view */}
       <div
-        className={`absolute top-1 bottom-1 w-1/2 bg-black rounded-md transition-all duration-300 ease-in-out ${
+        className={`absolute top-1 bottom-1 w-1/2 bg-black rounded-md transition-all duration-500 ease-in-out ${
           viewMode === "cards" ? "left-1" : "left-[calc(50%-1px)]"
         }`}
       />
@@ -320,7 +346,7 @@ export default function CandidatesPage({
 
         <div className="flex flex-row justify-between items-center gap-4">
           <div className="flex-1">
-            <CandidateFilters />
+            <CandidateFilters onSearch={handleSearch} />
           </div>
           <div className="flex-shrink-0">
             <Button variant="outline" onClick={() => router.push("/my-list")}>
@@ -338,20 +364,28 @@ export default function CandidatesPage({
         <div className="w-full mx-auto mb-20 sm:mb-0">
           {viewMode === "cards" && (
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-              {candidates.map((candidate) => {
-                const isLiked = likedCandidates.includes(candidate.id);
-                const canVote = isLiked || !hasReachedMaxVotes;
+              {filteredCandidates.length === 0 ? (
+                <div className="col-span-full text-center py-8">
+                  <p className="text-muted-foreground">
+                    No candidates found matching your search.
+                  </p>
+                </div>
+              ) : (
+                filteredCandidates.map((candidate) => {
+                  const isLiked = likedCandidates.includes(candidate.id);
+                  const canVote = isLiked || !hasReachedMaxVotes;
 
-                return (
-                  <CandidateCard
-                    key={candidate.id}
-                    candidate={candidate}
-                    isLiked={isLiked}
-                    disabled={!canVote}
-                    onLike={handleLike}
-                  />
-                );
-              })}
+                  return (
+                    <CandidateCard
+                      key={candidate.id}
+                      candidate={candidate}
+                      isLiked={isLiked}
+                      disabled={!canVote}
+                      onLike={handleLike}
+                    />
+                  );
+                })
+              )}
             </div>
           )}
 
@@ -361,51 +395,96 @@ export default function CandidatesPage({
                 <p>SENATOR / Vote for 12</p>
                 <p>(Bumoto ng hindi hihigit sa 12)</p>
               </div>
-              <div className="overflow-x-auto">
-                <div className="md:min-w-[640px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 border-t border-l border-black">
-                  {columns.map((columnCandidates, columnIndex) => (
-                    <div key={columnIndex} className="flex flex-col">
-                      {columnCandidates.map((candidate, candidateIndex) => {
-                        const isLiked = likedCandidates.includes(candidate.id);
-                        const canVote = isLiked || !hasReachedMaxVotes;
-
-                        return (
-                          <div
-                            key={candidate.id}
-                            className={`flex items-center border-r border-b border-black p-2 hover:bg-gray-50 ${
-                              isLiked ? "bg-gray-100" : ""
-                            } ${!canVote ? "opacity-50" : ""}`}
-                          >
-                            <div
-                              onClick={() =>
-                                canVote &&
-                                handleLike(candidate.id, candidate.name)
-                              }
-                              className={`w-6 h-6 flex items-center justify-center border-2 border-black rounded-full mr-2 ${
-                                canVote
-                                  ? "cursor-pointer"
-                                  : "cursor-not-allowed"
-                              } transition-all duration-300 ease-in-out ${
-                                isLiked ? "bg-black" : ""
-                              }`}
-                            />
-                            <div className="font-medium">
-                              {candidate.id}. {candidate.name}{" "}
-                              <span className="text-gray-500 text-xs uppercase">
-                                (
-                                {candidate.party === "Independent"
-                                  ? "IND"
-                                  : candidate.party}
-                                )
-                              </span>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ))}
+              {filteredCandidates.length === 0 ? (
+                <div className="text-center py-8 border border-black">
+                  <p className="text-muted-foreground">
+                    No candidates found matching your search.
+                  </p>
                 </div>
-              </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  {/* Recalculate columns based on filtered candidates */}
+                  {(() => {
+                    // Define the number of columns
+                    const numColumns = 4;
+
+                    // Calculate candidates per column (ceiling division to handle uneven distribution)
+                    const candidatesPerColumn = Math.ceil(
+                      filteredCandidates.length / numColumns
+                    );
+
+                    // Create column arrays
+                    const filteredColumns = [];
+                    for (let i = 0; i < numColumns; i++) {
+                      filteredColumns.push(
+                        filteredCandidates.slice(
+                          i * candidatesPerColumn,
+                          Math.min(
+                            (i + 1) * candidatesPerColumn,
+                            filteredCandidates.length
+                          )
+                        )
+                      );
+                    }
+
+                    return (
+                      <div className="md:min-w-[640px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 border-t border-l border-black">
+                        {filteredColumns.map(
+                          (columnCandidates, columnIndex) => (
+                            <div key={columnIndex} className="flex flex-col">
+                              {columnCandidates.map(
+                                (candidate, candidateIndex) => {
+                                  const isLiked = likedCandidates.includes(
+                                    candidate.id
+                                  );
+                                  const canVote =
+                                    isLiked || !hasReachedMaxVotes;
+
+                                  return (
+                                    <div
+                                      key={candidate.id}
+                                      className={`flex items-center border-r border-b border-black p-2 hover:bg-gray-50 ${
+                                        isLiked ? "bg-gray-100" : ""
+                                      } ${!canVote ? "opacity-50" : ""}`}
+                                    >
+                                      <div
+                                        onClick={() =>
+                                          canVote &&
+                                          handleLike(
+                                            candidate.id,
+                                            candidate.name
+                                          )
+                                        }
+                                        className={`w-6 h-6 flex items-center justify-center border-2 border-black rounded-full mr-2 ${
+                                          canVote
+                                            ? "cursor-pointer"
+                                            : "cursor-not-allowed"
+                                        } transition-all duration-300 ease-in-out ${
+                                          isLiked ? "bg-black" : ""
+                                        }`}
+                                      />
+                                      <div className="font-medium">
+                                        {candidate.id}. {candidate.name}{" "}
+                                        <span className="text-gray-500 text-xs uppercase">
+                                          (
+                                          {candidate.party === "Independent"
+                                            ? "IND"
+                                            : candidate.party}
+                                          )
+                                        </span>
+                                      </div>
+                                    </div>
+                                  );
+                                }
+                              )}
+                            </div>
+                          )
+                        )}
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
             </div>
           )}
         </div>

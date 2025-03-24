@@ -5,7 +5,8 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import type { CandidateWithLikes } from "@/lib/supabase";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Vote } from "lucide-react";
+import { Vote, CircleUser } from "lucide-react";
+import { useRouter } from "next/navigation";
 // import { Vote } from "lucide-react";
 
 interface CandidateCardProps {
@@ -24,6 +25,7 @@ export function CandidateCard({
   // Use the isLiked prop directly instead of maintaining internal state
   // This ensures the component reflects the parent's state
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   // Handle the like action by calling the parent's onLike function
   const handleLike = async () => {
@@ -48,9 +50,11 @@ export function CandidateCard({
     <Card
       className={`overflow-hidden ${
         isLiked ? "border-primary border-2 border-black" : ""
-      } ${disabled && !isLiked ? "opacity-50" : ""} ${
-        disabled ? "cursor-not-allowed" : "cursor-pointer"
-      }`}
+      } ${
+        disabled && !isLiked
+          ? "opacity-50 cursor-not-allowed"
+          : "cursor-pointer"
+      } `}
     >
       <div className="aspect-[3/4] relative group ">
         <Image
@@ -68,8 +72,6 @@ export function CandidateCard({
             onClick={handleLike}
             className={`h-4 w-4 border-2 mt-[2px] md:mt-0 rounded-full border-black ${
               isLiked ? "bg-black text-white" : ""
-            } ${
-              disabled && !isLiked ? "cursor-not-allowed" : "cursor-pointer"
             }`}
           />
           <h3 className="font-medium text-sm md:text-lg flex items-center gap-2">
@@ -80,12 +82,21 @@ export function CandidateCard({
         <p className="mt-2 text-sm line-clamp-3">{candidate.bio}</p>
       </CardContent>
       <CardFooter className="p-2 md:p-4 pt-0 flex justify-between">
-        <Link
-          href={`/candidates/${candidate.id}`}
-          className="text-sm font-medium text-primary hover:underline"
+        <Button
+          variant="outline"
+          size="sm"
+          className={`text-sm font-medium p-0 border-0 flex flex-row gap-1 items-center ${
+            disabled && !isLiked
+              ? "opacity-50 cursor-not-allowed"
+              : "cursor-pointer"
+          }`}
+          onClick={() => {
+            router.push(`/candidates/${candidate.id}`);
+          }}
         >
+          <CircleUser className="w-4 h-4" />
           View Profile
-        </Link>
+        </Button>
         <Button
           variant="ghost"
           size="sm"

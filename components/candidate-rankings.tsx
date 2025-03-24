@@ -13,8 +13,10 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import type { CandidateWithLikes } from "@/lib/supabase";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useRouter } from "next/navigation";
 
 interface CandidateRankingsProps {
   candidates: CandidateWithLikes[];
@@ -22,6 +24,8 @@ interface CandidateRankingsProps {
 
 export function CandidateRankings({ candidates }: CandidateRankingsProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const isMobile = useIsMobile();
+  const router = useRouter();
 
   const filteredCandidates = candidates.filter(
     (candidate) =>
@@ -35,10 +39,19 @@ export function CandidateRankings({ candidates }: CandidateRankingsProps) {
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Search candidates..."
-          className="pl-8"
+          className="pl-8 pr-8"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery("")}
+            className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground hover:text-foreground focus:outline-none"
+            aria-label="Clear search"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
       <div className="rounded-md border-none">
@@ -47,9 +60,8 @@ export function CandidateRankings({ candidates }: CandidateRankingsProps) {
             <TableRow>
               <TableHead className="w-12">Rank</TableHead>
               <TableHead>Candidate</TableHead>
-              <TableHead>Party</TableHead>
+              {!isMobile && <TableHead>Party</TableHead>}
               <TableHead className="text-right">Likes</TableHead>
-              <TableHead className="w-[100px]"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -63,7 +75,13 @@ export function CandidateRankings({ candidates }: CandidateRankingsProps) {
               filteredCandidates
                 .sort((a, b) => b.like_count - a.like_count)
                 .map((candidate, index) => (
-                  <TableRow key={candidate.id}>
+                  <TableRow
+                    key={candidate.id}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      router.push(`/candidates/${candidate.id}`);
+                    }}
+                  >
                     <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
@@ -81,16 +99,9 @@ export function CandidateRankings({ candidates }: CandidateRankingsProps) {
                         <span>{candidate.name}</span>
                       </div>
                     </TableCell>
-                    <TableCell>{candidate.party}</TableCell>
+                    {!isMobile && <TableCell>{candidate.party}</TableCell>}
                     <TableCell className="text-right">
                       {candidate.like_count}
-                    </TableCell>
-                    <TableCell>
-                      <Link href={`/candidates/${candidate.id}`}>
-                        <Button variant="ghost" size="sm">
-                          View
-                        </Button>
-                      </Link>
                     </TableCell>
                   </TableRow>
                 ))
