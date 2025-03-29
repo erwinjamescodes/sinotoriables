@@ -48,11 +48,11 @@ export async function CandidateCarousel() {
                 >
                   View Profile
                 </Link>
-                <LikeButton
+                {/* <LikeButton
                   candidateId={candidate.id}
                   initialLikes={candidate.like_count}
                   isLiked={candidate.liked}
-                />
+                /> */}
               </div>
             </CardContent>
           </Card>

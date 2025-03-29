@@ -93,7 +93,7 @@ export const getCandidates = cache(async () => {
 
 export const getCandidateById = cache(async (id: number) => {
   const { data, error } = await supabase
-    .from("candidates_with_likes")
+    .from("candidates_with_details")
     .select("*")
     .eq("id", id)
     .single();
