@@ -15,6 +15,7 @@ import {
   UserIcon,
   UsersIcon,
   ExternalLinkIcon,
+  ArrowLeftIcon,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -74,7 +75,7 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
       : "No biography available.";
 
     return (
-      <div className="container px-4 md:py-8 max-w-full md:max-w-screen-xl mx-auto">
+      <div className="container px-4 py-4 md:py-8 max-w-full md:max-w-screen-xl mx-auto">
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Left Column - Photo */}
           <div className="lg:col-span-1">
@@ -82,10 +83,7 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
               <CardContent className="p-0">
                 <div className="aspect-[3/4] relative">
                   <Image
-                    src={
-                      candidate.photo_url ||
-                      `/placeholder.svg?height=600&width=400`
-                    }
+                    src={candidate.photo_url}
                     alt={candidate.name}
                     fill
                     className="object-cover rounded-lg"
@@ -106,28 +104,14 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                     {candidate.like_count}
                   </span>
                 </div>
-                {/* <LikeButton candidateId={candidate.id} initialLiked={isLiked} /> */}
               </CardContent>
             </Card>
-
-            {/* External profile link */}
-            {/* {candidate.profile_url && (
-              <div className="mt-4">
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => window.open(candidate.profile_url, "_blank")}
-                >
-                  View Full Profile
-                </Button>
-              </div>
-            )} */}
           </div>
 
           {/* Right Column - Details */}
           <div className="lg:col-span-2">
             <div className="flex flex-col md:flex-row justify-between items-start">
-              <div className="w-full">
+              <div className="flex-1">
                 {candidate.profile_url ? (
                   <Link
                     href={candidate.profile_url}
@@ -158,6 +142,19 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                     Known as: "{candidate.alias}"
                   </p>
                 )}
+              </div>
+              <div className="">
+                <Link
+                  href={candidate.profile_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <ArrowLeftIcon className="h-5 w-5 ml-2  text-gray-600 hover:text-gray-800 transition-colors" />
+                  <p className=" font-bold  text-gray-600 hover:text-gray-800 transition-colors">
+                    Back to Candidates
+                  </p>
+                </Link>
               </div>
             </div>
 
