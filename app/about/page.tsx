@@ -31,7 +31,7 @@ export default function AboutPage() {
             <li>Browse all Senate candidates in the upcoming election</li>
             <li>View detailed profiles of each candidate</li>
             <li>Show your support by liking candidates</li>
-            <li>Explore analytics and insights about candidate popularity</li>
+            <li>Explore statistics and insights about candidate popularity</li>
           </ul>
 
           <h2>Liking Candidates</h2>

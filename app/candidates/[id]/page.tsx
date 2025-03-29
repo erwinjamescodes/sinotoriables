@@ -110,7 +110,7 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
 
           {/* Right Column - Details */}
           <div className="lg:col-span-2">
-            <div className="flex flex-col md:flex-row justify-between items-start">
+            <div className="flex flex-col space-y-3 md:space-y-0 md:flex-row justify-between items-start">
               <div className="flex-1">
                 {candidate.profile_url ? (
                   <Link
@@ -119,17 +119,17 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                     rel="noopener noreferrer"
                     className="inline-flex items-center group"
                   >
-                    <h1 className="text-3xl font-bold break-words group-hover:text-gray-600 transition-colors">
+                    <h1 className="text-2xl md:text-3xl font-bold break-words group-hover:text-gray-600 transition-colors">
                       {candidate.name}
                     </h1>
                     <ExternalLinkIcon className="h-5 w-5 ml-2 text-gray-500 group-hover:text-gray-600 transition-colors" />
                   </Link>
                 ) : (
-                  <h1 className="text-3xl font-bold break-words">
+                  <h1 className="text-2xl md:text-3xl font-bold break-words">
                     {candidate.name}
                   </h1>
                 )}
-                <p className="text-xl text-muted-foreground uppercase mb-2">
+                <p className="text-lg md:text-xl text-muted-foreground uppercase mb-2">
                   {candidate.party}
                 </p>
                 {candidate.alliance && (
@@ -143,15 +143,13 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                   </p>
                 )}
               </div>
-              <div className="">
+              <div className="w-full md:w-auto">
                 <Link
-                  href={candidate.profile_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2"
+                  href="/candidates"
+                  className="flex items-center gap-2 w-full md:w-auto justify-center md:justify-start bg-gray-100 hover:bg-gray-200 transition-colors rounded-md px-3 py-2"
                 >
-                  <ArrowLeftIcon className="h-5 w-5 ml-2  text-gray-600 hover:text-gray-800 transition-colors" />
-                  <p className=" font-bold  text-gray-600 hover:text-gray-800 transition-colors">
+                  <ArrowLeftIcon className="h-4 w-4 text-gray-600" />
+                  <p className="font-medium text-gray-600">
                     Back to Candidates
                   </p>
                 </Link>
@@ -159,16 +157,25 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
             </div>
 
             {/* Tabs for different sections of information */}
-            <div className="mt-6 overflow-x-hidden">
+            <div className="mt-6 overflow-x-auto sm:overflow-x-hidden">
               <Tabs defaultValue="bio">
                 <TabsList className="w-full flex">
-                  <TabsTrigger value="bio" className="flex-1">
+                  <TabsTrigger
+                    value="bio"
+                    className="flex-1 text-xs sm:text-sm px-1 sm:px-4"
+                  >
                     Biography
                   </TabsTrigger>
-                  <TabsTrigger value="details" className="flex-1">
+                  <TabsTrigger
+                    value="details"
+                    className="flex-1 text-xs sm:text-sm px-1 sm:px-4"
+                  >
                     Personal Details
                   </TabsTrigger>
-                  <TabsTrigger value="qualifications" className="flex-1">
+                  <TabsTrigger
+                    value="qualifications"
+                    className="flex-1 text-xs sm:text-sm px-1 sm:px-4"
+                  >
                     Qualifications
                   </TabsTrigger>
                 </TabsList>
@@ -177,8 +184,7 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                 <TabsContent value="bio" className="mt-4">
                   <Card>
                     <CardContent className="p-4 md:p-6">
-                      {/* <h2 className="text-xl font-semibold mb-4">Biography</h2> */}
-                      <div className="text-gray-700 break-words">
+                      <div className="text-gray-700 break-words text-sm md:text-base">
                         {formattedBio}
                       </div>
                     </CardContent>
@@ -189,9 +195,6 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                 <TabsContent value="details" className="mt-4">
                   <Card>
                     <CardContent className="p-4 md:p-6">
-                      {/* <h2 className="text-xl font-semibold mb-4">
-                        Personal Details
-                      </h2> */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="flex items-start gap-2">
                           <UserIcon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
@@ -237,9 +240,6 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                 <TabsContent value="qualifications" className="mt-4">
                   <Card>
                     <CardContent className="p-4 md:p-6">
-                      {/* <h2 className="text-xl font-semibold mb-4">
-                        Qualifications & Experience
-                      </h2> */}
                       <div className="space-y-6">
                         {candidate.education && (
                           <div className="flex items-start gap-2">
@@ -290,8 +290,10 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
             </div>
 
             {/* Related Candidates Section */}
-            <div className="mt-8">
-              <h2 className="text-xl font-semibold mb-4">Related Candidates</h2>
+            <div className="mt-6 md:mt-8">
+              <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">
+                Related Candidates
+              </h2>
               <RelatedCandidates currentCandidateId={candidate.id} />
             </div>
           </div>

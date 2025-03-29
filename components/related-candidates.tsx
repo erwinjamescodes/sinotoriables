@@ -64,11 +64,11 @@ export async function RelatedCandidates({
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
       {relatedCandidates.map((candidate) => (
-        <Card key={candidate.id}>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="relative w-12 h-12 rounded-full overflow-hidden">
+        <Card key={candidate.id} className="hover:shadow-md transition-shadow">
+          <CardContent className="p-3 md:p-4 flex items-center gap-3">
+            <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
               <Image
                 src={
                   candidate.photo_url || `/placeholder.svg?height=48&width=48`
@@ -78,11 +78,11 @@ export async function RelatedCandidates({
                 className="object-cover"
               />
             </div>
-            <div>
-              <h3 className="font-medium">{candidate.name}</h3>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-medium text-sm md:text-base truncate">{candidate.name}</h3>
               <Link
                 href={`/candidates/${candidate.id}`}
-                className="text-sm text-primary hover:underline"
+                className="text-xs md:text-sm text-primary hover:underline inline-block"
               >
                 View Profile
               </Link>

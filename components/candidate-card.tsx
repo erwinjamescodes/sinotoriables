@@ -61,9 +61,9 @@ export function CandidateCard({
           src={candidate.photo_url || `/placeholder.svg?height=400&width=300`}
           alt={candidate.name}
           fill
-          className={`object-cover filter transition-all duration-300 ease-in-out  ${
-            isLiked ? "grayscale-0" : "grayscale"
-          } ${disabled && !isLiked ? "" : "hover:grayscale-0"}`}
+          className={`object-cover filter transition-all duration-300 ease-in-out  $ ${
+            disabled && !isLiked ? "" : "hover:grayscale-0"
+          }`}
         />
       </div>
       <CardContent className="p-2 md:p-4">

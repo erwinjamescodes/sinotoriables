@@ -4,7 +4,7 @@ import { LikesTimeline } from "@/components/likes-timeline";
 import { PartyDistribution } from "@/components/party-distribution";
 
 export const metadata = {
-  title: "Analytics | SinoToriables PH",
+  title: "Statistics | SinoToriables PH",
   description:
     "Explore analytics and insights about Philippine Senate election candidates",
 };
@@ -17,7 +17,7 @@ export default async function AnalyticsPage() {
       <div className="space-y-8">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">
-            Analytics & Insights
+            Statistics & Insights
           </h1>
           <p className="text-muted-foreground">
             Explore data and trends about the Philippine Senate election

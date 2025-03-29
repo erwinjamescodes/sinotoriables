@@ -39,12 +39,12 @@ export default function Header() {
               My List
             </Link>
             <Link
-              href="/analytics"
+              href="/statistics"
               className={`text-sm font-medium transition-colors hover:text-gray-300 ${
-                pathname === "/analytics" ? "text-gray-300 font-bold" : ""
+                pathname === "/statistics" ? "text-gray-300 font-bold" : ""
               }`}
             >
-              Analytics
+              Statistics
             </Link>
             <Link
               href="/about"
@@ -89,13 +89,13 @@ export default function Header() {
               My List
             </Link>
             <Link
-              href="/analytics"
+              href="/statistics"
               className={`text-sm font-medium transition-colors hover:text-gray-300 py-2 ${
-                pathname === "/analytics" ? "text-gray-300 font-bold" : ""
+                pathname === "/statistics" ? "text-gray-300 font-bold" : ""
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              Analytics
+              Statistics
             </Link>
             <Link
               href="/about"

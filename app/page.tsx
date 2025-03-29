@@ -26,9 +26,9 @@ export default async function Home() {
                 <Link href="/candidates">
                   <Button size="lg">View Candidates</Button>
                 </Link>
-                <Link href="/analytics">
+                <Link href="/statistics">
                   <Button size="lg" variant="outline">
-                    Explore Analytics
+                    Explore Statistics
                   </Button>
                 </Link>
               </div>
