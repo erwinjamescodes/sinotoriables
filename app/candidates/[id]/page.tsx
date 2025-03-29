@@ -44,8 +44,8 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
     const isLiked = likedCandidates.includes(candidate.id);
 
     return (
-      <div className="container py-8 px-4">
-        <div className="grid gap-6 lg:grid-cols-3">
+      <div className="container p-4 md:py-8">
+        <div className="grid gap-2 md:gap-6 lg:grid-cols-3">
           <div className="lg:col-span-1">
             <Card>
               <CardContent className="p-0">
@@ -57,89 +57,29 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                     }
                     alt={candidate.name}
                     fill
-                    className="object-cover rounded-t-lg"
+                    className="object-cover rounded-lg"
                     priority
                   />
-                </div>
-                <div className="p-6 space-y-4">
-                  <div>
-                    <h1 className="text-2xl font-bold">{candidate.name}</h1>
-                    <p className="text-muted-foreground">{candidate.party}</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-muted-foreground">
-                        Likes:
-                      </span>
-                      <span className="font-medium">
-                        {candidate.like_count}
-                      </span>
-                    </div>
-                    <LikeButton
-                      candidateId={candidate.id}
-                      initialLikes={candidate.like_count}
-                      isLiked={isLiked}
-                    />
-                  </div>
-                  <div className="pt-4 border-t">
-                    <Button className="w-full">Share Profile</Button>
-                  </div>
                 </div>
               </CardContent>
             </Card>
           </div>
 
           <div className="lg:col-span-2">
-            <Tabs defaultValue="bio" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="bio">Biography</TabsTrigger>
-                <TabsTrigger value="platform">Platform</TabsTrigger>
-                <TabsTrigger value="stats">Statistics</TabsTrigger>
-              </TabsList>
-              <TabsContent value="bio" className="p-4 border rounded-md mt-2">
-                <h2 className="text-xl font-semibold mb-4">Biography</h2>
-                <div className="prose max-w-none dark:prose-invert">
-                  <p>{candidate.bio}</p>
-                </div>
-              </TabsContent>
-              <TabsContent
-                value="platform"
-                className="p-4 border rounded-md mt-2"
-              >
-                <h2 className="text-xl font-semibold mb-4">Platform</h2>
-                <div className="prose max-w-none dark:prose-invert">
-                  <p>{candidate.platform}</p>
-                </div>
-              </TabsContent>
-              <TabsContent value="stats" className="p-4 border rounded-md mt-2">
-                <h2 className="text-xl font-semibold mb-4">Statistics</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 border rounded-md">
-                    <div className="text-sm text-muted-foreground">Likes</div>
-                    <div className="text-2xl font-bold">
-                      {candidate.like_count}
-                    </div>
-                  </div>
-                  <div className="p-4 border rounded-md">
-                    <div className="text-sm text-muted-foreground">Ranking</div>
-                    <div className="text-2xl font-bold">#3</div>
-                  </div>
-                  <div className="p-4 border rounded-md">
-                    <div className="text-sm text-muted-foreground">
-                      Party Rank
-                    </div>
-                    <div className="text-2xl font-bold">#1</div>
-                  </div>
-                  <div className="p-4 border rounded-md">
-                    <div className="text-sm text-muted-foreground">
-                      Trending
-                    </div>
-                    <div className="text-2xl font-bold">+5%</div>
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
-
+            <div className="pt-0 md:pt-4 flex flex-col md:flex-row justify-between items-start">
+              <div>
+                <h1 className="text-2xl font-bold">{candidate.name}</h1>
+                <p className="text-muted-foreground uppercase">
+                  {candidate.party}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">
+                  Current votes count:
+                </span>
+                <span className="font-medium">{candidate.like_count}</span>
+              </div>
+            </div>
             <div className="mt-8">
               <h2 className="text-xl font-semibold mb-4">Related Candidates</h2>
               <RelatedCandidates currentCandidateId={candidate.id} />

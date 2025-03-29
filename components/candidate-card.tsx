@@ -85,7 +85,7 @@ export function CandidateCard({
         <Button
           variant="outline"
           size="sm"
-          className={`text-sm font-medium p-0 border-0 flex flex-row gap-1 items-center ${
+          className={`text-sm font-medium p-0 border-0 flex flex-row gap-1 items-center hover:bg-transparent ${
             disabled && !isLiked
               ? "opacity-50 cursor-not-allowed"
               : "cursor-pointer"
