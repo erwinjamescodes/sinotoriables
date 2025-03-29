@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import type { CandidateWithLikes } from "@/lib/supabase";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Vote, CircleUser } from "lucide-react";
+import { Vote, CircleUser, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 // import { Vote } from "lucide-react";
 
@@ -25,6 +25,7 @@ export function CandidateCard({
   // Use the isLiked prop directly instead of maintaining internal state
   // This ensures the component reflects the parent's state
   const [isLoading, setIsLoading] = useState(false);
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
   const router = useRouter();
 
   // Handle the like action by calling the parent's onLike function
@@ -44,6 +45,12 @@ export function CandidateCard({
         setIsLoading(false);
       }
     }
+  };
+
+  // Handle the profile navigation with loading state
+  const handleViewProfile = () => {
+    setIsProfileLoading(true);
+    router.push(`/candidates/${candidate.id}`);
   };
 
   return (
@@ -90,12 +97,15 @@ export function CandidateCard({
               ? "opacity-50 cursor-not-allowed"
               : "cursor-pointer"
           }`}
-          onClick={() => {
-            router.push(`/candidates/${candidate.id}`);
-          }}
+          onClick={handleViewProfile}
+          disabled={isProfileLoading}
         >
-          <CircleUser className="w-4 h-4" />
-          View Profile
+          {isProfileLoading ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <CircleUser className="w-4 h-4" />
+          )}
+          {isProfileLoading ? "Loading..." : "View Profile"}
         </Button>
         <Button
           variant="ghost"
