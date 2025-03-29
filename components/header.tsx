@@ -13,7 +13,7 @@ export default function Header() {
   };
 
   return (
-    <header className="border-b bg-primary text-white  sm:px-6 md:px-6 lg:px-24 h-16 fixed w-full z-50">
+    <header className="bg-primary text-white sm:px-6 md:px-6 lg:px-24 h-16 fixed w-full z-50">
       <div className="flex h-16 items-center justify-between mx-auto px-4 md:px-0">
         <div className="flex items-center gap-6 justify-between w-full">
           <Link href="/" className={`flex items-center gap-2`}>

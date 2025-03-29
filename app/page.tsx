@@ -3,6 +3,22 @@ import { Button } from "@/components/ui/button";
 import { CandidateCarousel } from "@/components/candidate-carousel";
 import { StatsSection } from "@/components/stats-section";
 import BallotAnimation from "@/components/ballot-animation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  CalendarIcon,
+  CheckCircleIcon,
+  InfoIcon,
+  MapPinIcon,
+  NewspaperIcon,
+} from "lucide-react";
 
 export default async function Home() {
   return (
@@ -41,12 +57,13 @@ export default async function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="container px-4 md:px-6 py-8 bg-muted rounded-lg mx-auto mb-8">
+      <section className="container px-4 md:px-6 py-8 bg-muted rounded-lg mx-auto mb-12">
         <StatsSection />
       </section>
+
       {/* Featured Candidates */}
       <section className="container mx-auto mt-8 px-4 md:px-0">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 mb-2">
           <div className="space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">
               Featured Candidates
@@ -57,23 +74,33 @@ export default async function Home() {
           </div>
           <CandidateCarousel />
         </div>
+        <div className="flex justify-center mt-2">
+          <Link href="/candidates">
+            <Button variant="outline" size="lg">
+              View Candidates
+            </Button>
+          </Link>
+        </div>
       </section>
 
       {/* Call to Action */}
-      <section className="container px-4 md:px-0 mx-auto mt-16 mb-8">
-        <div className="flex flex-col items-center gap-4 text-center">
+      <section className="container px-4 md:px-0 mx-auto mt-16 mb-8 bg-blue-50 py-12 rounded-lg">
+        <div className="flex flex-col items-center gap-4 text-center max-w-3xl mx-auto">
           <h2 className="text-3xl font-bold tracking-tight">
-            Ready to engage?
+            Your Voice Matters
           </h2>
-          <p className="text-muted-foreground max-w-[600px]">
-            Explore candidate profiles, learn about their platforms, and show
-            your support by liking your preferred candidates.
+          <p className="text-muted-foreground max-w-[700px] text-lg">
+            Democracy works best when citizens are informed and engaged. Explore
+            candidate profiles, learn about their platforms, and show your
+            support by liking your preferred candidates.
           </p>
-          <Link href="/candidates">
-            <Button size="lg" className="mt-4">
-              View All Candidates
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 mt-6">
+            <Link href="/candidates">
+              <Button size="lg" className="px-8">
+                View Candidates
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>

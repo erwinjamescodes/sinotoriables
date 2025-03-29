@@ -21,22 +21,10 @@ export default function Footer() {
         </p>
         <div className="flex items-center gap-4">
           <Link
-            href="/privacy"
+            href="https://www.erwinjames.tech/"
             className="text-sm text-muted-foreground hover:text-foreground"
           >
-            Privacy
-          </Link>
-          <Link
-            href="/terms"
-            className="text-sm text-muted-foreground hover:text-foreground"
-          >
-            Terms
-          </Link>
-          <Link
-            href="/contact"
-            className="text-sm text-muted-foreground hover:text-foreground"
-          >
-            Contact
+            www.erwinjames.tech
           </Link>
         </div>
       </div>

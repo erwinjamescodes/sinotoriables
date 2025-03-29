@@ -19,11 +19,17 @@ export async function StatsSection() {
     .limit(1)
     .single();
 
+  // Calculate days until election (May 12, 2025)
+  const today = new Date();
+  const electionDate = new Date("2025-05-12T00:00:00+08:00");
+  const timeDiff = electionDate.getTime() - today.getTime();
+  const daysUntilElection = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
   const stats = [
     { label: "Total Candidates", value: totalCandidates || 0 },
     { label: "Total Likes", value: totalLikes || 0 },
     { label: "Most Popular", value: topCandidate?.name || "N/A" },
-    { label: "Days Until Election", value: "120" }, // This would be calculated dynamically in a real app
+    { label: "Days Until Election", value: daysUntilElection.toString() },
   ];
 
   return (
